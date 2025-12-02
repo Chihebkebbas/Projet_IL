@@ -1,0 +1,47 @@
+.header {
+    position: sticky;
+    top: 20px;
+    z-index: 100;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 0 40px 30px 40px;
+    padding: 12px 24px;
+
+    /* Effet pillule flottante */
+    background: rgba(10, 10, 10, 0.7);
+    backdrop-filter: blur(20px);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius-full);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+}
+
+.logo {
+    height: 42px;
+    width: auto;
+    filter: drop-shadow(0 0 10px rgba(229, 0, 0, 0.3));
+}
+
+.container {
+    flex: 1;
+    max-width: 500px;
+    position: relative;
+    margin: 0 40px;
+}
+
+.actions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.icon {
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--base300);
+    font-size: 20px;
+    pointer-events: none;
+}
+

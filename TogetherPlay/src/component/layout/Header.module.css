@@ -1,0 +1,26 @@
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 20px 40px 60px 40px;
+    padding: 12px 24px;
+
+    /* Effet pillule flottante */
+    background: rgba(10, 10, 10, 0.7);
+    backdrop-filter: blur(20px);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius-full);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+}
+
+.logo {
+    height: 64px;
+    width: auto;
+    filter: drop-shadow(0 0 10px rgba(229,0,0,0.3));
+}
+
+.actions {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+}

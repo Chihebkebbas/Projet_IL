@@ -1,0 +1,31 @@
+.list {
+    /* --- Style Visuel --- */
+    padding: 0 12px 0 2px;
+    margin: 0;
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+
+    max-height: 500px; /* Ta limite de hauteur */
+    overflow-y: auto;  /* Active le scroll vertical si la liste dépasse */
+    overflow-x: hidden; /* Cache le scroll horizontal */
+}
+
+/* --- Design de la Scrollbar (Pour rester Pro) --- */
+.list::-webkit-scrollbar {
+    width: 4px; /* Très fine pour ne pas gêner le design */
+}
+
+.list::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.list::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 10px;
+}
+
+.list::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.4);
+}

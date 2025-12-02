@@ -1,0 +1,109 @@
+/* ========================================
+   BASE (S'applique à tous les boutons)
+   ======================================== */
+.btn {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px; /* Espace entre icône et texte */
+
+    font-family: "Inter", sans-serif;
+    font-weight: 600;
+    border-radius: 100px;
+    cursor: pointer;
+    overflow: hidden;
+
+    /* Transitions fluides */
+    transition: all 0.3s var(--ease-apple, ease);
+}
+
+.btn:active {
+    transform: scale(0.98);
+}
+
+/* ========================================
+   TAILLES (Sizes)
+   ======================================== */
+/* Correspond à "welcomeBotton" */
+.large {
+    height: 56px;
+    padding: 0 32px;
+    font-size: 16px;
+}
+
+/* Correspond à "homeBotton" */
+.default {
+    height: 44px;
+    padding: 0 20px;
+    font-size: 14px;
+}
+
+/* Correspond à "primary button" */
+.xlarge {
+    height: 64px;
+    font-size: 18px;
+    padding: 0px 48px;
+    width: fit-content;
+}
+
+/* Pour les boutons carrés (juste une icône) */
+.iconOnly {
+    width: 44px;
+    height: 44px;
+    padding: 0;
+    border-radius: 50%;
+}
+
+/* ========================================
+   VARIANTES (Couleurs & Apparence)
+   ======================================== */
+
+/* 1. GLASS (Par défaut - Header) */
+.glass {
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid var(--glass-border, rgba(255,255,255,0.1));
+    color: var(--base300);
+}
+
+.glass:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.2);
+    transform: translateY(-2px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+}
+
+/* 2. PRIMARY (Le bouton rouge du formulaire) */
+.primary {
+    width: fit-content;
+    background: var(--gradient-red, linear-gradient(135deg, #e50000, #b30000));
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: var(--white, #fff);
+    box-shadow: 0 10px 30px rgba(229, 0, 0, 0.3);
+}
+
+.primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 15px 40px rgba(229, 0, 0, 0.4);
+}
+
+/* 3. GHOST (Icônes seules, transparentes) */
+.ghost {
+    aspect-ratio: 1 / 1;
+    background: transparent;
+    border: none;
+    color: var(--base300);
+    cursor: pointer;
+    padding: 4px;
+    border-radius: 50%;
+}
+
+.red:hover {
+    cursor: pointer;
+    padding: 4px;
+    border-radius: 50%;
+    color: var(--primary-red) !important;
+    background: rgba(229, 0, 0, 0.1);;
+}

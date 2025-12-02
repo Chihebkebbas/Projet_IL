@@ -1,0 +1,68 @@
+/* ========================================
+   BASE (Commun à tous les inputs)
+   ======================================== */
+.input {
+    width: 100%;
+    box-sizing: border-box;
+    font-family: "Inter", sans-serif;
+    font-size: 16px;
+    color: var(--white);
+    outline: none; /* pour une gestion manuelle du focus*/
+    border-radius: 100px;
+
+    /* Reset partiel */
+    margin: 0;
+    appearance: none;
+}
+
+.input::placeholder {
+    color: var(--base300);
+    opacity: 1; /* Fix pour Firefox */
+}
+
+/* ========================================
+   VARIANTES
+   ======================================== */
+
+/* 1. DEFAULT (Page d'accueil - Grand et Glass) */
+.default {
+    height: 64px;
+    padding: 0 32px;
+
+    background: rgba(0, 0, 0, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    transition: all 0.2s var(--ease-apple, ease);
+}
+
+.default:focus {
+    background: rgba(0, 0, 0, 0.4);
+    border-color: var(--white);
+    box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.05);
+}
+
+/* 2. SEARCH (Header - Compact et Rond) */
+.search {
+    height: 44px;
+    padding: 0 48px 0 20px; /* Padding droit pour l'icône loupe */
+
+    background: rgba(255, 255, 255, 0.07);
+    border: 1px solid transparent;
+    font-size: 15px;
+    transition: all 0.3s var(--ease-apple, ease);
+}
+
+.search:focus {
+    background: rgba(0, 0, 0, 0.8);
+    border-color: rgba(255, 255, 255, 0.2);
+    box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.05);
+}
+
+/* 3. CHAT (Barre de message - Minimaliste) */
+.chat {
+    height: auto; /* Laisse le conteneur décider */
+    padding: 8px 16px;
+    background: transparent;
+    border: none;
+    font-size: 14px;
+}
+

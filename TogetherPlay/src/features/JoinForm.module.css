@@ -1,0 +1,85 @@
+.card {
+    /* Structure */
+    padding: 40px 80px;
+    border-radius: 50px;
+    width: 100%;
+    max-width: 900px;
+    overflow: hidden;
+    position: relative;
+
+    /* Effet Glass unifié avec Home.css */
+    background: var(--glass-bg);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    border: 1px solid var(--glass-border);
+    border-top: 1px solid rgba(255, 255, 255, 0.15); /* Lumière zénithale */
+    box-shadow: var(--glass-shadow);
+
+    transition: transform 0.3s var(--ease-apple), box-shadow 0.3s var(--ease-apple);
+}
+
+.card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 30px 60px rgba(0, 0, 0, 0.5);
+    border-color: rgba(255, 255, 255, 0.15);
+}
+
+.form {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 20px;
+}
+
+.title {
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+    align-items: center;
+    margin: 0px 0px 32px;
+}
+
+.action {
+    /* Reset Button Styles */
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    padding-bottom: 4px; /* Pour la bordure active */
+
+
+    font-size: 18px;
+    font-family: "Manrope", sans-serif;
+    font-weight: 600;
+    color: var(--base300);
+    text-decoration: none;
+    transition: color 0.2s ease;
+    padding-bottom: 4px;
+    border-bottom: 2px solid transparent;
+    background: none;
+}
+
+.action:hover,
+.active {
+    color: var(--white);
+}
+
+.active {
+    border-bottom-color: var(--primary-red);
+}
+
+.separator {
+    width: 1px;
+    height: 24px;
+    background: var(--glass-border);
+}
+
+.conditions {
+    color: var(--base200);
+    text-decoration: underline;
+}
+
+.alignEnd {
+    align-self: flex-end;
+}

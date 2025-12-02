@@ -1,0 +1,34 @@
+.item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px;
+    border-radius: 16px;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid transparent;
+    transition: all 0.2s;
+}
+
+.item:hover {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: rgba(255, 255, 255, 0.1);
+    transform: translateX(1px);
+
+}
+
+.thumbnail {
+    width: 60px;
+    height: 40px;
+    border-radius: 8px;
+    object-fit: cover;
+}
+
+.title {
+    font-family: "Manrope", sans-serif;
+    flex: 1;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--base200);
+    margin: 0;
+}
+

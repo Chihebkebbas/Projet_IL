@@ -1,0 +1,32 @@
+
+
+/* ============================================
+   MAIN CONTENT
+   ============================================ */
+
+.main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 0px;
+}
+
+.title {
+    font-family: "Manrope", sans-serif;
+    color: var(--white);
+    font-size: 56px;
+    font-weight: 700;
+    text-align: center;
+    margin: 0px;
+    max-width: 1000px;
+    text-shadow: 0 10px 30px rgba(0,0,0,0.5);
+}
+
+.subtitle {
+    font-family: "Inter", sans-serif;
+    font-size: 18px;
+    font-weight: 400;
+    color: var(--base300);
+    text-align: center;
+    margin: 12px 0px 64px;
+}
