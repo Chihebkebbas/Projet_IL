@@ -1,0 +1,30 @@
+# ========== NE JAMAIS PUSHER ==========
+node_modules/           # 200MB+ de dépendances !!!
+.env                   # TES MOTS DE PASSE DATABASE !
+
+# ========== LOGS ET ERREURS ==========
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+*.log
+
+# ========== FICHIERS SYSTÈME ==========
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ========== CONFIGURATION LOCALE ==========
+.vscode/
+.idea/
+
+# ========== DONNÉES ==========
+data/                  # Si tu installes MongoDB local
+dump/                  # Sauvegardes
+coverage/              # Tests
+
+# ========== BUILD ==========
+dist/
+build/
+out/
+*.exe
+*.msi
