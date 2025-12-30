@@ -27,6 +27,7 @@ Rôle : Lead Backend / Sockets
 
 # Flux de Données
 Connexion Initiale : Client → HTTP → API REST
+
 Synchronisation : Client ↔ WebSocket ↔ Socket.io
 Persistance : API → MongoDB (si disponible)
 Broadcast : Socket.io → Tous les clients connectés
