@@ -3,14 +3,11 @@ Développeur : Lina ALILI
 Rôle : Lead Backend / Sockets
 
 # Architecture Globale
-┌─────────────────────────────────────────────────────────────┐
-│                     TOGETHERPLAY BACKEND                    │
-│                     (Lina ALILI - Lead Back/Sockets)        │
-├─────────────────────────────────────────────────────────────┤
-│  ┌────────────┐  HTTP/REST  ┌────────────┐  WebSocket     │
-│  │   Client   │<────────────┤   API      │<────────────┐  │
-│  │  (React)   │────────────>│   REST     │─────────────┤  │
-│  └────────────┘             └────────────┘             │  │
+
+  HTTP/REST  ┌────────────┐  WebSocket     │
+     Client   <────────────┤   API      │<────────────┐  │
+    (React)   ────────────>│   REST     │─────────────┤  │
+                         │  │
 │                                 │                     │  │
 │        │                        |                     │  │
 │        │                  ┌────────────┐               │  │
@@ -34,7 +31,7 @@ Persistance : API → MongoDB (si disponible)
 
 Broadcast : Socket.io → Tous les clients connectés
 
-#Détails de Chaque Fichier
+# Détails de Chaque Fichier
 server.js - Point d'Entrée Principal : Configuration serveur global(Test)
 
 controllers/socketController.js - Coeur du système
@@ -51,7 +48,7 @@ CHAT TEMPS RÉEL
 
 GESTION CONNEXIONS
 
-Algorithmes Implémentés :
+# Algorithmes Implémentés :
 
 Fallback MongoDB : Vérifie disponibilité → Mode temporaire si échec
 
@@ -61,13 +58,13 @@ Nettoyage Automatique : Suppression salons vides après déconnexion
 
 Limitation Messages : Garde seulement 100 derniers messages par salon
 
-models/Room.js - Modèle de Données
+# models/Room.js - Modèle de Données
 
 Responsabilité : Structure des salons
 
 Schéma MongoDB :
 
-Méthodes Implémentées :
+# Méthodes Implémentées :
 
 addUser(username, socketId) : Ajout utilisateur avec timestamp
 
@@ -77,7 +74,7 @@ addMessage(username, text) : Ajout message avec limite 100
 
 addToPlaylist(video, addedBy) : Ajout vidéo à playlist
 
-routes/roomRoutes.js - API REST
+# routes/roomRoutes.js - API REST
 
  Responsabilité : Endpoints HTTP
  
@@ -93,11 +90,11 @@ GET	      /:roomId	Infos   salon	oui
 
 GET	      /test/connection	Test API	oui
 
-config/db.js - Connexion Base de Données
+# config/db.js - Connexion Base de Données
 
 Responsabilité : Gestion connexion MongoDB
 
-Avantages :
+# Avantages :
 
 Zero Downtime : Serveur fonctionne même sans DB
 
@@ -105,15 +102,15 @@ Adaptatif : Détecte automatiquement la disponibilité
 
 Transparent : Même API avec ou sans persistance
 
-utils/socketEvents.js - Constantes
+# utils/socketEvents.js - Constantes
 
 Responsabilité : Standardisation événements
 
-utils/syncHandler.js - Synchronisation Avancée
+# utils/syncHandler.js - Synchronisation Avancée
 
 Responsabilité : Optimisation synchronisation
 
-utils/helpers.js - Fonctions Utilitaires
+# utils/helpers.js - Fonctions Utilitaires
 
 package.json - Configuration Projet
 
