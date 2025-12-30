@@ -1,8 +1,8 @@
-TogetherPlay Backend - Documentation Technique Détaillée
+1. TogetherPlay Backend - Documentation Technique Détaillée
 Développeur : Lina ALILI
 Rôle : Lead Backend / Sockets
 
-Architecture Globale
+2. Architecture Globale
 ┌─────────────────────────────────────────────────────────────┐
 │                     TOGETHERPLAY BACKEND                    │
 │                     (Lina ALILI - Lead Back/Sockets)        │
@@ -25,7 +25,7 @@ Architecture Globale
 │                    Temps Réel - Synchronisation          │
 └─────────────────────────────────────────────────────────────┘
 
-Flux de Données
+3. Flux de Données
 Connexion Initiale : Client → HTTP → API REST
 Synchronisation : Client ↔ WebSocket ↔ Socket.io
 Persistance : API → MongoDB (si disponible)
