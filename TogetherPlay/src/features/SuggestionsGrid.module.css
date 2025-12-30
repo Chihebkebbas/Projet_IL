@@ -1,9 +1,12 @@
-
+/* ============================================
+   6. SUGGESTIONS
+   ============================================ */
 .section {
-    width: 100%;
+    padding-bottom: 40px;
 }
 
 .title {
+    /* Manrope pour les titres */
     font-family: "Manrope", sans-serif;
     font-size: 20px;
     font-weight: 700;
@@ -26,8 +29,13 @@
 
 .grid {
     display: grid;
-    /* Responsive : colonnes automatiques avec min 250px de large */
     grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
     gap: 24px 20px;
-    padding-bottom: 40px;
+}
+
+@media (max-width: 600px) {
+    .grid {
+        grid-template-columns: 1fr;
+        /* Une seule colonne sur mobile */
+    }
 }

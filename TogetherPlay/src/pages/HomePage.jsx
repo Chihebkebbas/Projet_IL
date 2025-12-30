@@ -2,22 +2,19 @@ import HeaderPrimary from "../component/layout/HeaderPrimary.jsx";
 import SuggestionsGrid from "../features/SuggestionsGrid.jsx";
 import Playlist from "../features/Playlist.jsx";
 import Chat from "../features/Chat.jsx";
-import VideoPlayer from "../features/VideoPlayer.jsx"; // 1. On importe le Player
-
+import VideoPlayer from "../features/VideoPlayer.jsx";
 import styles from "./HomePage.module.css";
 
 export default function HomePage() {
     return (
-        <>
+
+        <div className={styles.pageWrapper}>
+
             <HeaderPrimary />
 
             <div className={styles.layout}>
-
                 <main className={styles.main}>
-
-                    {/* 2. On remplace la div noire temporaire par le composant */}
                     <VideoPlayer />
-
                     <SuggestionsGrid />
                 </main>
 
@@ -25,8 +22,8 @@ export default function HomePage() {
                     <Playlist />
                     <Chat />
                 </aside>
-
             </div>
-        </>
+
+        </div>
     )
 }

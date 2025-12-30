@@ -3,6 +3,25 @@
 /* ============================================
    MAIN CONTENT
    ============================================ */
+.layout {
+    /* AJOUTS : Le background spécifique à la Home */
+    background: linear-gradient(135deg, #1a0505 0%, #050505 50%, #000000 100%);
+    background-attachment: fixed;
+    min-height: 100vh; /* Pour couvrir tout l'écran */
+
+    /* La grille */
+    display: grid;
+    grid-template-columns: 1fr 420px;
+    gap: 30px;
+
+    /* On gère les marges ici au lieu du body */
+    padding: 20px 80px 40px 80px; /* Ajusté pour remplacer le margin du body */
+
+    max-width: 1800px;
+    margin: 0 auto;
+}
+
+
 
 .main {
     display: flex;

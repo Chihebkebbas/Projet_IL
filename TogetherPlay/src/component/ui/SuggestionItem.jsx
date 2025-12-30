@@ -20,11 +20,11 @@ export default function SuggestionItem({ video }) {
 
     return (
         <article className={styles.card}>
-            <div className={styles.thumbnail}>
+            <div className={styles.thumbnailWrapper}>
                 <img
                     src={video.thumbnail}
                     alt={video.title}
-                    className={styles.image}
+                    className={styles.thumbnail}
                 />
             </div>
             <div className={styles.info}>
@@ -33,7 +33,7 @@ export default function SuggestionItem({ video }) {
                 </p>
                 <button
                     type="button"
-                    className={styles.addBtn}
+                    className={styles.addToPlaylistBtn}
                     aria-label="Ajouter à la playlist"
                     onClick={handleAddItem}
                 >

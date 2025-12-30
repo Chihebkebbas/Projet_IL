@@ -7,7 +7,8 @@
     flex-direction: column;
     gap: 12px;
 
-    max-height: 500px; /* Ta limite de hauteur */
+    max-height: 25vh;
+    min-height: 5vh;
     overflow-y: auto;  /* Active le scroll vertical si la liste dépasse */
     overflow-x: hidden; /* Cache le scroll horizontal */
 }
