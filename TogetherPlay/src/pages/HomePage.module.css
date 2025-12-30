@@ -1,0 +1,90 @@
+
+
+/* ============================================
+   LAYOUT PRINCIPAL
+   ============================================ */
+
+/* Le conteneur global qui gère la grille (Main + Sidebar) */
+.layout {
+    display: grid;
+    grid-template-columns: 1fr 420px; /* Colonne principale flexible + Sidebar fixe */
+    gap: 30px;
+    padding: 0 40px 40px 40px;
+
+    /* Hauteur calculée pour que ça tienne dans l'écran (Header ~110px est externe) */
+    height: calc(100vh - 110px);
+    max-width: 1800px;
+    margin: 0 auto;
+}
+
+/* ============================================
+   ZONE PRINCIPALE (Gauche)
+   ============================================ */
+.main {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+
+    /* Permet le scroll uniquement sur cette partie si le contenu dépasse */
+    overflow-y: auto;
+    padding-right: 10px; /* Petit espace pour ne pas coller à la scrollbar */
+}
+
+/* Personnalisation de la scrollbar pour Chrome/Safari/Edge */
+.main::-webkit-scrollbar {
+    width: 6px;
+}
+
+.main::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.main::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 10px;
+}
+
+.main::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.4);
+}
+
+/* ============================================
+   SIDEBAR (Droite)
+   ============================================ */
+.aside {
+    display: flex;
+    flex-direction: column;
+    gap: 20px; /* Espace entre Playlist et Chat */
+    height: 100%;
+    overflow: hidden; /* Empêche la sidebar globale de scroller, ce sont les enfants qui scrollent */
+}
+
+/* ============================================
+   RESPONSIVE
+   ============================================ */
+
+/* Tablettes et petits écrans */
+@media (max-width: 1200px) {
+    .layout {
+        grid-template-columns: 1fr;     /* Une seule colonne */
+        grid-template-rows: auto 1fr;   /* Le main au-dessus, la sidebar en dessous */
+        height: auto;                   /* La hauteur n'est plus fixe */
+        padding-bottom: 20px;
+    }
+
+    .main {
+        overflow-y: visible; /* On laisse la page entière scroller sur mobile */
+        padding-right: 0;
+    }
+
+    .aside {
+        height: auto; /* La sidebar prend la hauteur de son contenu */
+    }
+}
+
+/* Mobiles */
+@media (max-width: 768px) {
+    .layout {
+        padding: 0 20px 20px 20px;
+    }
+}

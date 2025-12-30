@@ -1,3 +1,9 @@
+.chatCard {
+    height: 500px;
+    display: flex;
+    flex-direction: column;
+}
+
 .messageInputForm {
     margin-top: 16px;
     display: flex;
@@ -6,6 +12,7 @@
     padding: 8px;
     border-radius: 50px;
     border: 1px solid rgba(255, 255, 255, 0.1);
+    flex-shrink: 0;
 }
 
 .messages {
@@ -13,7 +20,10 @@
     flex-direction: column;
     gap: 0;
     width: 100%;
-    height: 100%;
+    flex: 1;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding-right: 20px; /* Évite que la scrollbar ne cache le texte */
 }
 
 

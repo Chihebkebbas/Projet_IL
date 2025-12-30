@@ -1,11 +1,11 @@
 import styles from './Card.module.css'
 
 export default function Card({
-                                 children, title, iconName
+                                 children, title, iconName, className = ""
                              }) {
 
     return (
-        <section className={styles.card}>
+        <section className={`${styles.card} ${className}`}>
             <div className={styles.header}>
                 <span className={`${styles.icon} material-symbols-outlined`}>
                     {iconName}

@@ -1,0 +1,95 @@
+@import url("https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined");
+
+/* ============================================
+   1. VARIABLES & THEME
+   ============================================ */
+:root {
+    /* Couleurs de base */
+    --primary-red: #e50000;
+    --primary-red-glow: rgba(229, 0, 0, 0.4);
+    --dark-bg: #050505;
+    --base200: #e4e4e7;
+    --base300: #a1a1aa;
+    --white: #ffffff;
+    --black: #000000;
+
+    /* Effets Liquid Glass (Apple Style) */
+    --glass-bg: rgba(20, 20, 20, 0.6);
+    --glass-border: rgba(255, 255, 255, 0.08);
+    --glass-highlight: rgba(255, 255, 255, 0.05);
+    --glass-blur: blur(24px) saturate(110%);
+    --glass-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+
+    /* Gradients */
+    --gradient-red: linear-gradient(135deg, rgba(229, 0, 0, 0.9) 0%, rgba(180, 0, 0, 1) 100%);
+    --gradient-overlay: linear-gradient(to top, rgba(0, 0, 0, 0.95) 20%, rgba(0, 0, 0, 0.6) 50%, transparent 100%);
+
+    /* Spacing & Radius */
+    --radius-lg: 24px;
+    --radius-xl: 32px;
+    --radius-full: 100px;
+
+    /* Transitions */
+    --ease-apple: cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+/* ============================================
+   2. RESET & GLOBAL STYLES
+   ============================================ */
+* {
+    box-sizing: border-box;
+    outline: none;
+}
+
+body {
+    background: linear-gradient(135deg, #1a0505 0%, #050505 50%, #000000 100%);
+    background-attachment: fixed;
+    margin: 0 80px;
+    padding: 0;
+    min-height: 100vh;
+    /* Inter pour le texte courant (p, span, etc.) */
+    font-family: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
+    color: var(--base200);
+    overflow-x: hidden;
+}
+
+/* Scrollbar moderne */
+::-webkit-scrollbar {
+    width: 6px;
+}
+
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.4);
+}
+
+.material-symbols-outlined {
+    font-family: "Material Symbols Outlined";
+    font-size: 24px;
+    color: var(--base300);
+    margin: 0;
+}
+
+
+/* ============================================
+   3. Accessibility
+   ============================================ */
+
+
+/* Essentiel pour l'Accessibilité (A11Y).
+ Masque le label pour les yeux mais le rend indispensable
+ et lisible pour les lecteurs d'écran
+ (les placeholders ne suffisent pas pour les standards A11Y). */
+.sr-only {
+    position: absolute;
+    width: 1px; height: 1px; padding: 0; margin: -1px;
+    overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0;
+}

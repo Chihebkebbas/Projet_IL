@@ -1,23 +1,42 @@
-import {usePlaylist} from "../../context/HomePlaylistContext.jsx";
+import styles from './SuggestionItem.module.css';
+import { usePlaylist } from "../../context/HomePlaylistContext.jsx";
 
-export default function SuggestionItem() {
+export default function SuggestionItem({ video }) {
 
-    const {items, setItems} = usePlaylist();
+    const { addItem } = usePlaylist(); // Assurez-vous d'avoir exporté addItem dans votre Context !
 
-    function handleAddItem() {
+    function handleAddItem(e) {
+        e.stopPropagation(); // Empêche de lancer la vidéo si on clique juste sur "Ajouter"
 
+        // On crée un nouvel objet pour la playlist basé sur la suggestion
+        const newItem = {
+            title: video.title,
+            thumbnail: video.thumbnail,
+            duration: video.duration // Si vous avez cette info
+        };
+
+        addItem(newItem);
     }
+
     return (
-        <article className="suggestion-card">
-            <div className="suggestion-thumbnail">
-                <img src="TogetherPlay/src/assets/images/youtube.jpg"
-                     alt="Ce milliardaire a tout perdu à cause d'un caprice..."/>
+        <article className={styles.card}>
+            <div className={styles.thumbnail}>
+                <img
+                    src={video.thumbnail}
+                    alt={video.title}
+                    className={styles.image}
+                />
             </div>
-            <div className="suggestion-info">
-                <p className="suggestion-title">
-                    Ce milliardaire a tout perdu à cause d'un caprice...
+            <div className={styles.info}>
+                <p className={styles.title} title={video.title}>
+                    {video.title}
                 </p>
-                <button type="button" className="add-to-playlist-btn" aria-label="Ajouter à la playlist">
+                <button
+                    type="button"
+                    className={styles.addBtn}
+                    aria-label="Ajouter à la playlist"
+                    onClick={handleAddItem}
+                >
                     <span className="material-symbols-outlined">add</span>
                 </button>
             </div>

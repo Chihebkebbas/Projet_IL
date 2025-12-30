@@ -45,8 +45,7 @@ export function HomePlaylistProvider({children}) {
 
 
     return (
-        /* CORRECTION ICI : On utilise le .Provider du contexte créé */
-        <HomePlaylistContext.Provider value={{items, setItems}}>
+        <HomePlaylistContext.Provider value={{items, setItems, addItem, removeItem}}>
             {children}
         </HomePlaylistContext.Provider>
     )

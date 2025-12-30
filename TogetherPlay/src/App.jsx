@@ -1,25 +1,14 @@
-import { useState } from 'react'
-import Button from "./component/ui/Button.jsx";
-import Input from "./component/ui/Input.jsx";
-import JoinForm from "./features/JoinForm.jsx";
-import {WelcomeActionProvider} from "./context/WelcomeActionContext.jsx";
-import WelcomePage from "./pages/WelcomePage.jsx";
-import Playlist from "./features/Playlist.jsx";
-import PlaylistItem from "./component/ui/PlaylistItem.jsx";
-import Header from "./component/layout/Header.jsx";
-import {HomePlaylistProvider} from "./context/HomePlaylistContext.jsx";
-import Message from "./component/ui/Message.jsx";
-import Chat from "./features/Chat.jsx";
+import { HomePlaylistProvider } from "./context/HomePlaylistContext.jsx";
+import HomePage from "./pages/HomePage.jsx";
+// import WelcomePage from "./pages/WelcomePage.jsx"; // On commente temporairement
 
 function App() {
-  return (
-
-        <>
-            <WelcomePage />
-        </>
-
-
-  )
+    return (
+        <HomePlaylistProvider>
+            {/* <WelcomePage />  <-- On cache ça pour le moment */}
+            <HomePage />      {/* <-- On affiche ça pour tester */}
+        </HomePlaylistProvider>
+    )
 }
 
 export default App
