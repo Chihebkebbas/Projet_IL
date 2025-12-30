@@ -32,13 +32,14 @@ Persistance : API → MongoDB (si disponible)
 Broadcast : Socket.io → Tous les clients connectés
 
 # Détails de Chaque Fichier
-server.js - Point d'Entrée Principal : Configuration serveur global(Test)
 
-controllers/socketController.js - Coeur du système
+# server.js - Point d'Entrée Principal : Configuration serveur global(Test)
 
-Logique Socket.io - TA TÂCHE PRINCIPALE
+# controllers/socketController.js - Coeur du système
 
-Événements Gérés :
+# Logique Socket.io - TA TÂCHE PRINCIPALE
+
+# Événements Gérés :
 
 GESTION DES SALONS
 
