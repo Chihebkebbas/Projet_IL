@@ -37,3 +37,38 @@ export const searchVideos = async (query) => {
         throw error;
     }
 };
+
+export const getPopularVideos = async () => {
+    if (!API_KEY) {
+        throw new Error("Clé API YouTube manquante.");
+    }
+
+    try {
+        const url = new URL(`${BASE_URL}/videos`);
+        url.searchParams.append("part", "snippet");
+        url.searchParams.append("chart", "mostPopular");
+        url.searchParams.append("regionCode", "FR"); // Optional: target region
+        url.searchParams.append("maxResults", "12");
+        url.searchParams.append("key", API_KEY);
+
+        const response = await fetch(url.toString());
+
+        if (!response.ok) {
+            const errorData = await response.json();
+            throw new Error(errorData.error.message || "Erreur lors de la récupération des vidéos populaires");
+        }
+
+        const data = await response.json();
+
+        return data.items.map(item => ({
+            id: item.id, // for /videos endpoint, id is a string, not object
+            title: item.snippet.title,
+            thumbnail: item.snippet.thumbnails.high.url || item.snippet.thumbnails.medium.url,
+            channelTitle: item.snippet.channelTitle,
+            description: item.snippet.description
+        }));
+    } catch (error) {
+        console.error("YouTube API Popular Error:", error);
+        throw error;
+    }
+};

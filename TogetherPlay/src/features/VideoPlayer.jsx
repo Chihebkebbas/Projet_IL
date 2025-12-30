@@ -1,24 +1,46 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import styles from './VideoPlayer.module.css';
-import thumbnail from '../assets/images/youtube.jpg'; // Image par défaut
+import thumbnail from '../assets/images/youtube.jpg';
+import { usePlaylist } from "../context/HomePlaylistContext.jsx";
 
 export default function VideoPlayer() {
+    const { currentVideo } = usePlaylist();
     const [isPlaying, setIsPlaying] = useState(false);
 
-    // Fonction simple pour basculer play/pause (pour l'UI seulement pour l'instant)
+    // Reset playing state when video changes
+    useEffect(() => {
+        if (currentVideo) setIsPlaying(true);
+    }, [currentVideo]);
+
     const togglePlay = () => setIsPlaying(!isPlaying);
 
     return (
         <section className={styles.section} aria-label="Lecteur vidéo">
             <div className={styles.container}>
-                {/* Image Placeholder (sera remplacée par <video> ou <iframe> plus tard) */}
-                <div className={styles.videoPlaceholder}>
-                    <img
-                        src={thumbnail}
-                        alt="Vidéo en cours de lecture"
-                        className={styles.thumbnail}
-                    />
-                </div>
+                {currentVideo ? (
+                    <div className={styles.videoWrapper}>
+                        <iframe
+                            width="100%"
+                            height="100%"
+                            src={`https://www.youtube.com/embed/${currentVideo.id}?autoplay=1`}
+                            title={currentVideo.title}
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                            allowFullScreen
+                            className={styles.iframe}
+                        ></iframe>
+                    </div>
+                ) : (
+                    <div className={styles.videoPlaceholder}>
+                        <img
+                            src={thumbnail}
+                            alt="Aucune vidéo sélectionnée"
+                            className={styles.thumbnail}
+                        />
+                        <div className={styles.overlay}>
+                            <p>Sélectionnez une vidéo pour commencer la lecture</p>
+                        </div>
+                    </div>
+                )}
 
                 {/* Interface des contrôles */}
                 <div className={styles.controls} aria-label="Contrôles vidéo">
