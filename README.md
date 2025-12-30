@@ -1,8 +1,8 @@
-1. TogetherPlay Backend - Documentation Technique Détaillée
+# TogetherPlay Backend - Documentation Technique Détaillée
 Développeur : Lina ALILI
 Rôle : Lead Backend / Sockets
 
-2. Architecture Globale
+# Architecture Globale
 ┌─────────────────────────────────────────────────────────────┐
 │                     TOGETHERPLAY BACKEND                    │
 │                     (Lina ALILI - Lead Back/Sockets)        │
@@ -25,13 +25,13 @@ Rôle : Lead Backend / Sockets
 │                    Temps Réel - Synchronisation          │
 └─────────────────────────────────────────────────────────────┘
 
-3. Flux de Données
+# Flux de Données
 Connexion Initiale : Client → HTTP → API REST
 Synchronisation : Client ↔ WebSocket ↔ Socket.io
 Persistance : API → MongoDB (si disponible)
 Broadcast : Socket.io → Tous les clients connectés
 
-Détails de Chaque Fichier
+#Détails de Chaque Fichier
 server.js - Point d'Entrée Principal : Configuration serveur global(Test)
 
 controllers/socketController.js - Coeur du système
@@ -97,8 +97,8 @@ Client A                    Serveur                    Client B
    │                          │── receiveMessage ───────▶│
    │◀─ receiveMessage ────────│◀─ receiveMessage ────────│
 
-   Test Serveur Express
-   # Commande
+# Test Serveur Express
+# Commande
 curl http://localhost:5000
 
 # Résultat 
@@ -118,7 +118,7 @@ curl http://localhost:5000
   }
 }
 
-Test Socket.io - Connexion
+# Test Socket.io - Connexion
 Fichier : test_socket.html
 Résultats : SUCCÈS COMPLET
 CONNECTÉ au serveur TogetherPlay!
@@ -134,16 +134,16 @@ Client 1: Socket ID: abc123def456
 Client 2: Socket ID: ghi789jkl012
 Client 3: Socket ID: mno345pqr678
 
- Résultat
+# Résultat
 Serveur gère 3 connexions simultanées
 Broadcast fonctionne pour tous
 Aucune déconnexion inattendue
 
-Intégration Frontend
+# Intégration Frontend
 //
-Conclusion Technique
-Réussites Clés
- Architecture modulaire - Séparation claire des responsabilités
+# Conclusion Technique
+# Réussites Clés
+Architecture modulaire - Séparation claire des responsabilités
 Socket.io fonctionnel - Communication temps réel validée
 Robustesse - Fallback automatique, gestion erreurs
 Performance - Latence faible, mémoire optimisée
