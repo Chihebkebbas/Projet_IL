@@ -33,11 +33,15 @@ Broadcast : Socket.io → Tous les clients connectés
 
 # Détails de Chaque Fichier
 
-# server.js - Point d'Entrée Principal : Configuration serveur global(Test)
+# server.js - Point d'Entrée Principal : 
 
-# controllers/socketController.js - Coeur du système
+Configuration serveur global(Test)
 
-# Logique Socket.io - TA TÂCHE PRINCIPALE
+# controllers/socketController.js 
+
+Coeur du système
+
+# Logique Socket.io - Ma TÂCHE PRINCIPALE
 
 # Événements Gérés :
 
