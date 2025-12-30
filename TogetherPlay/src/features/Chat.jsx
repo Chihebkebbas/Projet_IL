@@ -37,7 +37,7 @@ export default function Chat() {
 
     return (
         <>
-            <Card iconName={"chat_bubble"} title={"Messages"}>
+            <Card iconName={"chat_bubble"} title={"Messages"} className={styles.chatCard}>
 
                 <div className={styles.messages}>
                     {messages.map((msg, i) => (

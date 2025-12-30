@@ -1,7 +1,7 @@
 import Header from "../component/layout/Header.jsx";
 import JoinForm from "../features/JoinForm.jsx";
 import Footer from "../component/layout/Footer.jsx";
-import styles from './Welcome.Page.module.css';
+import styles from './WelcomePage.module.css';
 import {useState} from "react";
 import {WelcomeActionProvider} from "../context/WelcomeActionContext.jsx";
 

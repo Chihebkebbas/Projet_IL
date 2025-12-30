@@ -1,0 +1,100 @@
+
+
+.card {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    background: transparent;
+    cursor: pointer;
+    position: relative; /* Pour le contexte de superposition */
+}
+
+/* --- L'IMAGE (Thumbnail) --- */
+.thumbnail {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    border-radius: 12px;
+    overflow: hidden;
+    background: #1a1a1a;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    transition: transform 0.2s ease-out, box-shadow 0.2s ease-out;
+}
+
+.image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0.9;
+    transition: opacity 0.2s ease;
+}
+
+.card:hover .thumbnail {
+    transform: scale(1.02);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.6);
+}
+
+.card:hover .image {
+    opacity: 1;
+}
+
+/* --- LES INFOS --- */
+.info {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding: 0 4px;
+    min-height: 44px;
+}
+
+.title {
+    font-family: "Manrope", sans-serif;
+    flex: 1;
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 1.4;
+    color: var(--base200);
+    margin: 0;
+
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+
+    transition: color 0.2s ease;
+}
+
+.card:hover .title {
+    color: var(--white);
+}
+
+/* --- LE BOUTON AJOUTER --- */
+.addBtn {
+    flex-shrink: 0;
+    width: 32px;
+    height: 32px;
+    margin-left: 8px;
+    border-radius: 50%;
+    border: none;
+    background: #262626;
+    color: var(--white);
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+
+    opacity: 0;
+    transform: translateX(-10px);
+    transition: all 0.2s ease-out;
+}
+
+.card:hover .addBtn {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+.addBtn:hover {
+    background: var(--primary-red);
+    transform: scale(1.1);
+}

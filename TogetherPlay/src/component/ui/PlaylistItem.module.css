@@ -7,6 +7,8 @@
     background: rgba(255, 255, 255, 0.03);
     border: 1px solid transparent;
     transition: all 0.2s;
+    height: 64px;
+    box-sizing: border-box;
 }
 
 .item:hover {
@@ -30,5 +32,9 @@
     font-weight: 500;
     color: var(--base200);
     margin: 0;
+    white-space: nowrap;      /* Force le texte sur une seule ligne */
+    overflow: hidden;         /* Cache ce qui dépasse */
+    text-overflow: ellipsis;  /* Ajoute les "..." à la fin */
+    min-width: 0;
 }
 
