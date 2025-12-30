@@ -4,23 +4,18 @@ Rôle : Lead Backend / Sockets
 
 # Architecture Globale
 
-  HTTP/REST  ┌────────────┐  WebSocket     │
-     Client   <────────────┤   API      │<────────────┐  │
-    (React)   ────────────>│   REST     │─────────────┤  │
-                         │  │
-│                                 │                     │  │
-│        │                        |                     │  │
-│        │                  ┌────────────┐               │  │
-│        │                  │  MongoDB   │               │  │
-│        │                  │  (Optionel)│               │  │
-│        │                  └────────────┘               │  │
-│        |                                               │  │
-│  ┌────────────┐  WebSocket  ┌────────────┐             │  │
-│  │   Client   │<────────────┤  Socket.io │<-------------  │
-│  │  (React)   │────────────>│   Server   │               │
-│  └────────────┘             └────────────┘               │
-│                    Temps Réel - Synchronisation          │
-└─────────────────────────────────────────────────────────────┘
+L'architecture que j'ai développée pour TogetherPlay repose sur une dualité stratégique : un canal HTTP/REST pour les opérations ponctuelles et structurées (création de salons,
+
+vérifications), et un canal WebSocket/Socket.io pour la synchronisation temps réel qui constitue le cœur du projet. Le serveur Express que j'ai configuré écoute simultanément sur le port 
+
+5000, gérant à la fois les requêtes API traditionnelles et les connexions WebSocket permanentes. Mon contrôleur Socket.io - tâche principale de mon rôle de Lead Backend/Sockets - agit comme 
+
+un centre de dispatch intelligent : il capture chaque action utilisateur (play, pause, message, ajout playlist) et la retransmet instantanément à tous les autres participants du même salon,
+
+garantissant une expérience parfaitement synchronisée. L'architecture intègre un système de fallback automatique permettant au serveur de fonctionner en mode temporaire sans MongoDB, 
+
+assurant ainsi une disponibilité continue même en l'absence de base de données, tout en restant prête à exploiter pleinement MongoDB lorsqu'il est disponible pour la persistance des données.
+
 
 # Flux de Données
 Connexion Initiale : Client → HTTP → API REST
