@@ -5,6 +5,13 @@
     padding-bottom: 40px;
 }
 
+.loading {
+    color: var(--base300);
+    text-align: center;
+    padding: 20px;
+    font-size: 1.1rem;
+}
+
 .title {
     /* Manrope pour les titres */
     font-family: "Manrope", sans-serif;

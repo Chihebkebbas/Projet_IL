@@ -3,7 +3,7 @@ import { usePlaylist } from "../../context/HomePlaylistContext.jsx";
 
 export default function SuggestionItem({ video }) {
 
-    const { addItem } = usePlaylist(); // Assurez-vous d'avoir exporté addItem dans votre Context !
+    const { addItem, playVideo } = usePlaylist(); // Assurez-vous d'avoir exporté addItem dans votre Context !
 
     function handleAddItem(e) {
         e.stopPropagation(); // Empêche de lancer la vidéo si on clique juste sur "Ajouter"
@@ -19,7 +19,7 @@ export default function SuggestionItem({ video }) {
     }
 
     return (
-        <article className={styles.card}>
+        <article className={styles.card} onClick={() => playVideo(video)}>
             <div className={styles.thumbnailWrapper}>
                 <img
                     src={video.thumbnail}

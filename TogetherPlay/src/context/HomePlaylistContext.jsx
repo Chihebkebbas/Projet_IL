@@ -9,16 +9,17 @@ const HomePlaylistContext = createContext(undefined);
 
 // Données initiales
 const initialPlaylist = [
-    { id: "1", title: "Résumé : Le BARÇA fête son retour au CAMP NOU contre BILBAO et met la pression sur le REAL !", thumbnail: thum1 },
-    { id: "2", title: "QUI EST L'IMPOSTEUR ? (ft Aya Nakamura & Géraldine Nakache)", thumbnail: thum2 },
-    { id: "3", title: "J'ai codé un algorithme qui reconnaît les gens dans le métro", thumbnail: thum3 },
-    { id: "4", title: "\"Your Dream Body Won't Make You Happy.\" | David Laid on Fitness, Perfection & Obsession", thumbnail: thum4 }
+    { id: "dQw4w9WgXcQ", title: "Rick Astley - Never Gonna Give You Up (Official Music Video)", thumbnail: thum1 },
+    { id: "jfKfPfyJRdk", title: "lofi hip hop radio - beats to relax/study to", thumbnail: thum2 },
+    { id: "k3Vfj-e1Ma4", title: "React Router 6 - Full Course", thumbnail: thum3 },
+    { id: "SqcY0GlETPk", title: "React Tutorial for Beginners", thumbnail: thum4 }
 ];
 
 
 
 export function HomePlaylistProvider({ children }) {
     const [items, setItems] = useState(initialPlaylist);
+    const [currentVideo, setCurrentVideo] = useState(null);
 
     const addItem = (newItem) => {
         setItems(prev => [...prev, { id: crypto.randomUUID(), ...newItem }]);
@@ -32,9 +33,12 @@ export function HomePlaylistProvider({ children }) {
         setItems(prev => prev.map(item => item.id === id ? { ...item, ...updatedFields } : item));
     };
 
+    const playVideo = (video) => {
+        setCurrentVideo(video);
+    };
 
     return (
-        <HomePlaylistContext.Provider value={{ items, setItems, addItem, removeItem }}>
+        <HomePlaylistContext.Provider value={{ items, setItems, addItem, removeItem, currentVideo, playVideo }}>
             {children}
         </HomePlaylistContext.Provider>
     )
