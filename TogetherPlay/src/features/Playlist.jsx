@@ -23,7 +23,7 @@ import {
 import styles from './Playlist.module.css';
 import Card from "../component/ui/Card.jsx";
 import PlaylistItem from "../component/ui/PlaylistItem.jsx";
-import {usePlaylist} from "../context/HomePlaylistContext.jsx";
+import { usePlaylist } from "../context/HomePlaylistContext.jsx";
 
 /* ------------------------------------------------------------
    LE WRAPPER (Le pont entre DND-Kit et ton UI)
@@ -58,11 +58,13 @@ function SortablePlaylistItem({ item }) {
     );
 }
 
+import Button from "../component/ui/Button.jsx";
+
 /* ------------------------------------------------------------
    LE COMPOSANT PRINCIPAL
 ------------------------------------------------------------ */
 export default function Playlist() {
-    const {items, setItems} = usePlaylist();
+    const { items, setItems, clearPlaylist, shufflePlaylist } = usePlaylist();
 
     // Configuration des capteurs (Souris, Tactile, Clavier)
     // PointerSensor est mieux que MouseSensor (marche sur mobile aussi)
@@ -87,8 +89,31 @@ export default function Playlist() {
         }
     };
 
+    const playlistActions = (
+        <>
+            <Button
+                type="button"
+                variant="ghost"
+                size="iconOnly"
+                iconName="shuffle"
+                iconHover="red"
+                ariaLabel="Mélanger la playlist"
+                onClick={shufflePlaylist}
+            />
+            <Button
+                type="button"
+                variant="ghost"
+                size="iconOnly"
+                iconName="delete_sweep"
+                iconHover="red"
+                ariaLabel="Vider la playlist"
+                onClick={clearPlaylist}
+            />
+        </>
+    );
+
     return (
-        <Card title="Playlist" iconName="menu">
+        <Card title="Playlist" iconName="menu" actions={playlistActions}>
             <DndContext
                 sensors={sensors}
                 collisionDetection={closestCenter}
@@ -100,9 +125,15 @@ export default function Playlist() {
                     strategy={verticalListSortingStrategy}
                 >
                     <ul className={styles.list}>
-                        {items.map((item) => (
-                            <SortablePlaylistItem key={item.id} item={item} />
-                        ))}
+                        {items.length > 0 ? (
+                            items.map((item) => (
+                                <SortablePlaylistItem key={item.id} item={item} />
+                            ))
+                        ) : (
+                            <li className={styles.empty}>
+                                Ajouter des vidéos à la playlist
+                            </li>
+                        )}
                     </ul>
                 </SortableContext>
             </DndContext>

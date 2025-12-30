@@ -14,11 +14,15 @@ export default function HomePage() {
         setSearchQuery(query);
     };
 
+    const handleLogoClick = () => {
+        setSearchQuery(""); // Reset search to show default home view
+    };
+
     return (
 
         <div className={styles.pageWrapper}>
 
-            <HeaderPrimary onSearch={handleSearch} />
+            <HeaderPrimary onSearch={handleSearch} onLogoClick={handleLogoClick} />
 
             <div className={styles.layout}>
                 <main className={styles.main}>
