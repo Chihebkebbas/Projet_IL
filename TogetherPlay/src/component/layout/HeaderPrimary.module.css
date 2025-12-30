@@ -31,20 +31,40 @@
     max-width: 500px;
     position: relative;
     margin: 0 40px;
+    display: flex;
+    /* Ensure input and button align */
+    align-items: center;
 }
 
-/* Note: styles for Input component should be handled there, but we can override or ensure structure allows it.
-   The user CSS had .search-bar styles. We might need to make sure our Input component supports this styling or pass a class.
-*/
+/* The input styling is handled by Input component, but the container positions the button */
 
-.icon {
+/* Search Button (Invisible but clickable) */
+.searchBtn {
     position: absolute;
-    right: 15px;
+    right: 5px;
     top: 50%;
     transform: translateY(-50%);
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    transition: background 0.2s;
     color: var(--base300);
+}
+
+.searchBtn:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: var(--white);
+}
+
+.icon {
     font-size: 20px;
     pointer-events: none;
+    /* Let clicks pass to button if needed, but button handles click */
 }
 
 /* Boutons Header */
