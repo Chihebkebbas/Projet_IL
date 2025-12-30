@@ -58,3 +58,35 @@
         grid-template-columns: 1fr;
     }
 }
+
+.loading {
+    color: var(--base300);
+    font-size: 1.2rem;
+    text-align: center;
+    padding: 40px;
+    animation: pulse 1.5s infinite ease-in-out;
+}
+
+.error {
+    color: var(--primary-red);
+    background: rgba(229, 0, 0, 0.1);
+    padding: 15px;
+    border-radius: 8px;
+    border: 1px solid var(--primary-red);
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+@keyframes pulse {
+    0% {
+        opacity: 0.5;
+    }
+
+    50% {
+        opacity: 1;
+    }
+
+    100% {
+        opacity: 0.5;
+    }
+}
