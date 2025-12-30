@@ -115,19 +115,19 @@ Responsabilité : Optimisation synchronisation
 package.json - Configuration Projet
 
 Socket.io - Système Temps Réel
-Client A                    Serveur                    Client B
-   │                          │                          │
-   │── joinRoom ─────────────▶│                          │
-   │                          │── roomJoined ───────────▶│
-   │                          │── userListUpdate ───────▶│
-   │                          │                          │
-   │── videoPlay ────────────▶│                          │
-   │                          │── videoPlay ─────────────▶│
-   │◀─ videoPlay (conf) ──────│◀─ videoPlay (conf) ──────│
-   │                          │                          │
-   │── sendMessage ──────────▶│                          │
-   │                          │── receiveMessage ───────▶│
-   │◀─ receiveMessage ────────│◀─ receiveMessage ────────│
+
+ le mécanisme de synchronisation temps réel que j'ai implémenté : il montre comment chaque action utilisateur est capturée, traitée par mon serveur Socket.io, puis retransmise à tous les 
+ 
+ participants. Par exemple, quand le Client A émet un événement joinRoom, mon serveur - via le contrôleur que j'ai développé - non seulement accueille ce client mais diffuse également sa 
+ 
+ présence aux autres (roomJoined, userListUpdate). La magie opère notamment avec la synchronisation vidéo : lorsque le Client A lance la lecture (videoPlay), le serveur propage 
+ 
+ instantanément cette commande au Client B tout en confirmant l'action aux deux parties, garantissant ainsi que tous les spectateurs voient exactement la même image au même instant. Le chat
+ 
+ suit le même principe bidirectionnel : chaque message est capturé, traité par ma logique de gestion des événements, et diffusé à l'ensemble des participants, créant ainsi une expérience 
+ 
+ collaborative fluide et parfaitement synchronisée.
+
 
 # Test Serveur Express
 # Commande
