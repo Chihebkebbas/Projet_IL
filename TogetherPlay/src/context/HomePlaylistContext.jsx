@@ -37,8 +37,27 @@ export function HomePlaylistProvider({ children }) {
         setCurrentVideo(video);
     };
 
+    const clearPlaylist = () => {
+        setItems([]);
+    };
+
+    const shufflePlaylist = () => {
+        setItems(prev => {
+            const shuffled = [...prev];
+            for (let i = shuffled.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+            }
+            return shuffled;
+        });
+    };
+
     return (
-        <HomePlaylistContext.Provider value={{ items, setItems, addItem, removeItem, currentVideo, playVideo }}>
+        <HomePlaylistContext.Provider value={{
+            items, setItems, addItem, removeItem,
+            currentVideo, playVideo,
+            clearPlaylist, shufflePlaylist
+        }}>
             {children}
         </HomePlaylistContext.Provider>
     )

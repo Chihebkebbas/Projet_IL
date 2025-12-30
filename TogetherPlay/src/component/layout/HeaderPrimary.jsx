@@ -6,7 +6,13 @@ import logo from "../../assets/images/logo.png"
 export default function HeaderPrimary(props) {
     return (
         <header className={`${styles.header}`}>
-            <div>
+            <div
+                onClick={props.onLogoClick}
+                style={{ cursor: props.onLogoClick ? 'pointer' : 'default' }}
+                role="button"
+                aria-label="Retour à l'accueil"
+                tabIndex={0}
+            >
                 <img className={`${styles.logo}`} src={logo} alt="Logo Together Play" />
             </div>
             <form className={`${styles.container}`} role="search" onSubmit={(e) => {

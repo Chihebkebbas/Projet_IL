@@ -8,14 +8,27 @@
     gap: 12px;
 
     max-height: 25vh;
-    min-height: 5vh;
-    overflow-y: auto;  /* Active le scroll vertical si la liste dépasse */
-    overflow-x: hidden; /* Cache le scroll horizontal */
+    min-height: 100px;
+    /* Un peu de hauteur même vide */
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+.empty {
+    color: var(--base300);
+    text-align: center;
+    padding: 30px 10px;
+    font-size: 0.9rem;
+    font-style: italic;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: var(--radius-md);
+    margin: 0 10px;
 }
 
 /* --- Design de la Scrollbar (Pour rester Pro) --- */
 .list::-webkit-scrollbar {
-    width: 4px; /* Très fine pour ne pas gêner le design */
+    width: 4px;
+    /* Très fine pour ne pas gêner le design */
 }
 
 .list::-webkit-scrollbar-track {
