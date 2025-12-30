@@ -1,5 +1,5 @@
 import { rooms } from "../data/rooms.js";
-import generateCode from "../utils/generateCode.js";
+import generateCode from "../utils/socketEvents.js";
 
 export function createRoom(roomName) {
   const code = generateCode();
