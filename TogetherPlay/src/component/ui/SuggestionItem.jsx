@@ -10,6 +10,7 @@ export default function SuggestionItem({ video }) {
 
         // On crée un nouvel objet pour la playlist basé sur la suggestion
         const newItem = {
+            videoId: video.id, // Important: Keep the original YouTube ID!
             title: video.title,
             thumbnail: video.thumbnail,
             duration: video.duration // Si vous avez cette info

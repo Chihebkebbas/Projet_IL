@@ -10,10 +10,10 @@ const HomePlaylistContext = createContext(undefined);
 
 // Données initiales
 const initialPlaylist = [
-    { id: "dQw4w9WgXcQ", title: "Rick Astley - Never Gonna Give You Up (Official Music Video)", thumbnail: thum1 },
-    { id: "jfKfPfyJRdk", title: "lofi hip hop radio - beats to relax/study to", thumbnail: thum2 },
-    { id: "k3Vfj-e1Ma4", title: "React Router 6 - Full Course", thumbnail: thum3 },
-    { id: "SqcY0GlETPk", title: "React Tutorial for Beginners", thumbnail: thum4 }
+    { id: "dQw4w9WgXcQ", videoId: "dQw4w9WgXcQ", title: "Rick Astley - Never Gonna Give You Up (Official Music Video)", thumbnail: thum1 },
+    { id: "jfKfPfyJRdk", videoId: "jfKfPfyJRdk", title: "lofi hip hop radio - beats to relax/study to", thumbnail: thum2 },
+    { id: "k3Vfj-e1Ma4", videoId: "k3Vfj-e1Ma4", title: "React Router 6 - Full Course", thumbnail: thum3 },
+    { id: "SqcY0GlETPk", videoId: "SqcY0GlETPk", title: "React Tutorial for Beginners", thumbnail: thum4 }
 ];
 
 export function HomePlaylistProvider({ children }) {
@@ -63,6 +63,14 @@ export function HomePlaylistProvider({ children }) {
         emitVideoChange(video);
     };
 
+    const playNext = () => {
+        if (items.length > 0) {
+            const nextVideo = items[0];
+            playVideo(nextVideo);
+            removeItem(nextVideo.id);
+        }
+    };
+
     const clearPlaylist = () => {
         setItems([]);
         emitUpdate([]);
@@ -108,7 +116,8 @@ export function HomePlaylistProvider({ children }) {
             clearPlaylist, shufflePlaylist,
             roomId, setRoomId,
             updatePlaylistFromSocket,
-            playVideoFromSocket
+            playVideoFromSocket,
+            playNext
         }}>
             {children}
         </HomePlaylistContext.Provider>
