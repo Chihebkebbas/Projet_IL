@@ -2,20 +2,38 @@ import Card from "../component/ui/Card.jsx";
 import Message from "../component/ui/Message.jsx";
 import Input from "../component/ui/Input.jsx";
 import styles from "./Chat.module.css";
-import { useEffect, useState } from "react";
-import { getMessages, saveMessages } from "../services/messagesStorage.js";
+import { useEffect, useState, useRef } from "react";
+import socket from "../services/socket.js";
 
-export default function Chat() {
+export default function Chat({ roomId }) {
+    const [messages, setMessages] = useState([]);
+    const messagesEndRef = useRef(null);
 
-    // Charger les messages depuis localStorage
-    const [messages, setMessages] = useState(() => {
-        return getMessages();
-    });
+    const scrollToBottom = () => {
+        messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    };
 
-    // Synchroniser les messages avec localStorage à chaque changement
     useEffect(() => {
-        saveMessages(messages);
+        scrollToBottom();
     }, [messages]);
+
+    useEffect(() => {
+        // Initial load from room_data (handled in HomePage? Or specific event?)
+        // Let's listen to room_data here specifically for messages to decouple
+        socket.on("room_data", (data) => {
+            if (data.messages) setMessages(data.messages);
+        });
+
+        // Listen for new messages
+        socket.on("receive_message", (data) => {
+            setMessages((prev) => [...prev, data]);
+        });
+
+        return () => {
+            socket.off("receive_message");
+            socket.off("room_data");
+        };
+    }, []);
 
     // Envoyer un message
     function handleSubmit(e) {
@@ -24,13 +42,20 @@ export default function Chat() {
 
         if (!text.trim()) return;
 
-        const newMessage = {
-            sender: "me",
-            text,
-            date: Date.now()
+        // Get username from local storage or default
+        const storedUsername = localStorage.getItem("username") || "Invité";
+
+        const messageData = {
+            roomId,
+            message: {
+                sender: storedUsername,
+                text,
+                date: Date.now()
+            }
         };
 
-        setMessages(prev => [...prev, newMessage]);
+        // On envoie au serveur
+        socket.emit("send_message", messageData);
 
         e.target.reset();
     }
@@ -41,10 +66,20 @@ export default function Chat() {
 
                 <div className={styles.messages}>
                     {messages.map((msg, i) => (
-                        <Message key={i} variant={msg.sender === "me" ? "send" : "receive"}>
-                            {msg.text}
+                        <Message key={i} variant={msg.sender === (localStorage.getItem("username") || "me") ? "send" : "receive"}>
+                            {/* Small tweak: if sender is "me" locally, or matches username */}
+                            {/* For now let's assume sender name display isn't fully separate from variant, 
+                                 but the variant depends on if *I* sent it. 
+                              */}
+                            <div style={{ display: 'flex', flexDirection: 'column' }}>
+                                <span style={{ fontSize: '0.7em', color: 'rgba(255,255,255,0.5)', marginBottom: '2px', alignSelf: msg.sender === localStorage.getItem("username") ? 'flex-end' : 'flex-start' }}>
+                                    {msg.sender}
+                                </span>
+                                <span>{msg.text}</span>
+                            </div>
                         </Message>
                     ))}
+                    <div ref={messagesEndRef} />
                 </div>
 
                 <form onSubmit={handleSubmit} className={styles.messageInputForm} aria-label="Envoyer un message">
