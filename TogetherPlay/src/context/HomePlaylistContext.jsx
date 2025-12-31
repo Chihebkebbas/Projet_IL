@@ -30,15 +30,7 @@ export function HomePlaylistProvider({ children }) {
 
     const emitVideoChange = (video) => {
         if (roomId) {
-            // We reuse the same event or a specific one
-            // Current implementation of server listens to 'video_state_change' but that's for play/pause/seek
-            // We might want to persist current video in room data?
-            // Optional: The server stores "currentVideo". We can emit an update for that.
-            // For now let's just use a custom event or reuse 'room_data' if backend supports it?
-            // Backend has NO specific event to update ONLY the current video reference in DB (except via video_state_change maybe?)
-            // Let's assume we just play it locally, and maybe later sync it.
-            // Implementing basic sync:
-            // socket.emit("video_changed", { roomId, video }); -> We need to handle this on server if we want persistence
+            socket.emit("video_changed", { roomId, video });
         }
     };
 
@@ -93,6 +85,10 @@ export function HomePlaylistProvider({ children }) {
         setItems(newItems);
     };
 
+    const playVideoFromSocket = (video) => {
+        setCurrentVideo(video);
+    };
+
     // Special setter for DND which replaces the whole list
     const setItemsAndSync = (newItemsOrFn) => {
         // This one is tricky because setItems accepts a function or value.
@@ -111,7 +107,8 @@ export function HomePlaylistProvider({ children }) {
             currentVideo, playVideo,
             clearPlaylist, shufflePlaylist,
             roomId, setRoomId,
-            updatePlaylistFromSocket
+            updatePlaylistFromSocket,
+            playVideoFromSocket
         }}>
             {children}
         </HomePlaylistContext.Provider>

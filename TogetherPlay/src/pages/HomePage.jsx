@@ -14,7 +14,7 @@ export default function HomePage() {
     const [searchQuery, setSearchQuery] = useState("");
     const { roomId } = useParams();
     const navigate = useNavigate();
-    const { setRoomId, updatePlaylistFromSocket, playVideo, items } = usePlaylist();
+    const { setRoomId, updatePlaylistFromSocket, playVideo, playVideoFromSocket, items } = usePlaylist();
 
     useEffect(() => {
         if (!roomId) {
@@ -45,13 +45,25 @@ export default function HomePage() {
             updatePlaylistFromSocket(newPlaylist);
         });
 
+        socket.on("video_changed", (video) => {
+            // We need a way to update video without emitting back
+            // But context 'playVideo' emits... 
+            // We need 'playVideoFromSocket' in context similar to 'updatePlaylistFromSocket'
+            // OR checks in context. 
+            // Let's trust that 'playVideo' emits, the server receives, sees it's same, and broadcasts back? 
+            // No, that creates infinite loop if we render based on state change.
+            // Ideally we need 'playVideoFromSocket' exposed.
+            playVideoFromSocket(video);
+        });
+
         return () => {
             setRoomId(null);
             socket.off("room_data");
             socket.off("playlist_updated");
+            socket.off("video_changed");
             // Optional: socket.emit("leave_room", roomId);
         }
-    }, [roomId, navigate, setRoomId, updatePlaylistFromSocket, playVideo]);
+    }, [roomId, navigate, setRoomId, updatePlaylistFromSocket, playVideo, playVideoFromSocket]);
 
     const handleSearch = (query) => {
         setSearchQuery(query);
