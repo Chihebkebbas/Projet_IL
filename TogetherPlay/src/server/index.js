@@ -113,6 +113,20 @@ io.on('connection', (socket) => {
         io.to(roomId).emit('playlist_updated', playlist);
     });
 
+    // Video Change (New video selected)
+    socket.on('video_changed', async (data) => {
+        const { roomId, video } = data;
+
+        try {
+            await Room.updateOne(
+                { roomId: roomId },
+                { $set: { currentVideo: video } }
+            );
+        } catch (e) { console.error("Error saving current video", e); }
+
+        io.to(roomId).emit('video_changed', video);
+    });
+
     // Video State Change (Play/Pause/Seek)
     socket.on('video_state_change', async (data) => {
         const { roomId, videoState } = data;

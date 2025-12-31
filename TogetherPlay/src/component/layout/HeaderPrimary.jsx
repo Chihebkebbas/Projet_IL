@@ -30,7 +30,22 @@ export default function HeaderPrimary(props) {
                 </button>
             </form>
             <nav className={`${styles.actions}`} aria-label="Actions du header">
-                <Button type="button" variant="glass" size="default">Copier le lien</Button>
+                {/* Show Copy Link only if we have a room ID (passed via props) */}
+                {props.roomId && (
+                    <Button
+                        type="button"
+                        variant="glass"
+                        size="default"
+                        onClick={() => {
+                            const url = window.location.href;
+                            navigator.clipboard.writeText(url)
+                                .then(() => alert("Lien copié !"))
+                                .catch(err => console.error("Erreur copie", err));
+                        }}
+                    >
+                        Copier le lien
+                    </Button>
+                )}
                 <Button type="button" variant="glass" size="iconOnly" iconName="settings" aria-label="Paramètres" />
 
             </nav>

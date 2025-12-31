@@ -1,33 +1,113 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import styles from './VideoPlayer.module.css';
 import thumbnail from '../assets/images/youtube.jpg';
 import { usePlaylist } from "../context/HomePlaylistContext.jsx";
+import YouTube from 'react-youtube';
+import socket from "../services/socket.js";
 
 export default function VideoPlayer() {
-    const { currentVideo } = usePlaylist();
-    const [isPlaying, setIsPlaying] = useState(false);
+    const { currentVideo, roomId } = usePlaylist(); // roomId is now in context
+    const [player, setPlayer] = useState(null);
+    const isRemoteUpdate = useRef(false); // Flag to prevent loops
 
-    // Reset playing state when video changes
+    const opts = {
+        height: '100%',
+        width: '100%',
+        playerVars: {
+            autoplay: 1,
+            controls: 1, // Show YouTube controls
+            modestbranding: 1,
+            rel: 0,
+        },
+    };
+
+    const onReady = (event) => {
+        setPlayer(event.target);
+    };
+
+    // --- EMIT EVENTS ---
+    const onPlay = (event) => {
+        if (isRemoteUpdate.current) return;
+        if (roomId) {
+            socket.emit("video_state_change", {
+                roomId,
+                videoState: { isPlaying: true, currentTime: event.target.getCurrentTime() }
+            });
+        }
+    };
+
+    const onPause = (event) => {
+        if (isRemoteUpdate.current) return;
+        if (roomId) {
+            socket.emit("video_state_change", {
+                roomId,
+                videoState: { isPlaying: false, currentTime: event.target.getCurrentTime() }
+            });
+        }
+    };
+
+    // We could also listen to onStateChange for buffering/seeking, 
+    // but Play/Pause covers most sync needs for now. 
+    // Seeking usually triggers pause -> seek -> play, so it might be partially covered,
+    // but explicit seek handling requires check on current time diff.
+
+    // --- RECEIVE EVENTS ---
     useEffect(() => {
-        if (currentVideo) setIsPlaying(true);
-    }, [currentVideo]);
+        if (!roomId || !player) return;
 
-    const togglePlay = () => setIsPlaying(!isPlaying);
+        socket.on("video_state_updated", (state) => {
+            // state = { isPlaying, currentTime }
+            isRemoteUpdate.current = true;
+
+            const timeDiff = Math.abs(player.getCurrentTime() - state.currentTime);
+
+            // Sync time if diff is large (> 2 seconds)
+            if (timeDiff > 2) {
+                player.seekTo(state.currentTime);
+            }
+
+            if (state.isPlaying) {
+                player.playVideo();
+            } else {
+                player.pauseVideo();
+            }
+
+            // Reset flag after a short delay
+            setTimeout(() => {
+                isRemoteUpdate.current = false;
+            }, 500);
+        });
+
+        return () => {
+            socket.off("video_state_updated");
+        };
+    }, [roomId, player]);
+
+
+    // Manual controls wrapper (for the custom buttons below the video)
+    const togglePlay = () => {
+        if (!player) return;
+        const state = player.getPlayerState();
+        if (state === 1) // Playing
+            player.pauseVideo();
+        else
+            player.playVideo();
+    };
 
     return (
         <section className={styles.section} aria-label="Lecteur vidéo">
             <div className={styles.container}>
                 {currentVideo ? (
                     <div className={styles.videoWrapper}>
-                        <iframe
-                            width="100%"
-                            height="100%"
-                            src={`https://www.youtube.com/embed/${currentVideo.id}?autoplay=1`}
-                            title={currentVideo.title}
-                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                            allowFullScreen
-                            className={styles.iframe}
-                        ></iframe>
+                        <YouTube
+                            videoId={currentVideo.id}
+                            opts={opts}
+                            onReady={onReady}
+                            onPlay={onPlay}
+                            onPause={onPause}
+                            className={styles.iframe} // We might need to adjust CSS if class isn't on iframe
+                            iframeClassName={styles.iframe}
+                        />
                     </div>
                 ) : (
                     <div className={styles.videoPlaceholder}>
@@ -41,55 +121,8 @@ export default function VideoPlayer() {
                         </div>
                     </div>
                 )}
-
-                {/* Interface des contrôles */}
-                <div className={styles.controls} aria-label="Contrôles vidéo">
-
-                    {/* Barre de progression */}
-                    <div className={styles.progressBar} role="slider" aria-label="Progression">
-                        <div className={styles.progressFill}></div>
-                    </div>
-
-                    {/* Boutons */}
-                    <div className={styles.controlsRow}>
-
-                        {/* Groupe Gauche : Lecture, Volume... */}
-                        <div className={styles.sideControls}>
-                            <button
-                                type="button"
-                                className={styles.btn}
-                                aria-label={isPlaying ? "Pause" : "Lecture"}
-                                onClick={togglePlay}
-                            >
-                                <span className="material-symbols-outlined">
-                                    {isPlaying ? 'pause' : 'play_arrow'}
-                                </span>
-                            </button>
-                            <button type="button" className={styles.btn} aria-label="Reculer de 10s">
-                                <span className="material-symbols-outlined">replay_10</span>
-                            </button>
-                            <button type="button" className={styles.btn} aria-label="Avancer de 10s">
-                                <span className="material-symbols-outlined">forward_10</span>
-                            </button>
-                            <button type="button" className={styles.btn} aria-label="Volume">
-                                <span className="material-symbols-outlined">volume_up</span>
-                            </button>
-                        </div>
-                        {/* Groupe Droite : Paramètres, Plein écran */}
-                        <div className={styles.sideControls}>
-                            <button type="button" className={styles.btn} aria-label="Sous-titres">
-                                <span className="material-symbols-outlined">closed_caption</span>
-                            </button>
-                            <button type="button" className={styles.btn} aria-label="Paramètres vidéo">
-                                <span className="material-symbols-outlined">settings</span>
-                            </button>
-                            <button type="button" className={styles.btn} aria-label="Plein écran">
-                                <span className="material-symbols-outlined">fullscreen</span>
-                            </button>
-                        </div>
-
-                    </div>
-                </div>
+                {/* Note: The custom control bar below is optional now since YouTube player has controls.
+                But we can keep it as a remote control. */}
             </div>
         </section>
     );
