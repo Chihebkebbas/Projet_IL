@@ -6,7 +6,7 @@ import YouTube from 'react-youtube';
 import socket from "../services/socket.js";
 
 export default function VideoPlayer() {
-    const { currentVideo, roomId } = usePlaylist(); // roomId is now in context
+    const { currentVideo, roomId, playNext } = usePlaylist(); // roomId is now in context
     const [player, setPlayer] = useState(null);
     const isRemoteUpdate = useRef(false); // Flag to prevent loops
 
@@ -100,11 +100,12 @@ export default function VideoPlayer() {
                 {currentVideo ? (
                     <div className={styles.videoWrapper}>
                         <YouTube
-                            videoId={currentVideo.id}
+                            videoId={currentVideo.videoId || currentVideo.id}
                             opts={opts}
                             onReady={onReady}
                             onPlay={onPlay}
                             onPause={onPause}
+                            onEnd={() => playNext()}
                             className={styles.iframe} // We might need to adjust CSS if class isn't on iframe
                             iframeClassName={styles.iframe}
                         />
