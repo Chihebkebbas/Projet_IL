@@ -11,7 +11,7 @@ function App() {
             <HomePlaylistProvider>
                 <Routes>
                     <Route path="/" element={<WelcomePage />} />
-                    <Route path="/room" element={<HomePage />} />
+                    <Route path="/room/:roomId" element={<HomePage />} />
                     <Route path="*" element={<NotFoundPage />} />
                 </Routes>
             </HomePlaylistProvider>
