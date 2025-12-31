@@ -77,83 +77,12 @@ app.get('/api/rooms/:roomId', async (req, res) => {
    SOCKET.IO LOGIC
 ------------------------------------------------------------ */
 
-io.on('connection', (socket) => {
-    console.log(`User connected: ${socket.id}`);
+/* ------------------------------------------------------------
+   SOCKET.IO LOGIC
+------------------------------------------------------------ */
 
-    // Join a specific room
-    socket.on('join_room', async (roomId) => {
-        socket.join(roomId);
-        console.log(`User ${socket.id} joined room ${roomId}`);
-
-        // Optional: Send current room state (playlist/chat) to the user immediately
-        const room = await Room.findOne({ roomId });
-        if (room) {
-            socket.emit('room_data', {
-                playlist: room.playlist,
-                messages: room.messages,
-                currentVideo: room.currentVideo
-            });
-        }
-    });
-
-    // Send Message
-    socket.on('send_message', async (data) => {
-        const { roomId, message } = data; // message = { sender, text, date }
-
-        // Save to DB
-        try {
-            await Room.updateOne(
-                { roomId: roomId },
-                { $push: { messages: message } }
-            );
-        } catch (e) { console.error("Error saving msg", e); }
-
-        // Broadcast to Room ONLY
-        io.to(roomId).emit('receive_message', message);
-    });
-
-    // Send Playlist Update (Add/Remove/Order)
-    socket.on('update_playlist', async (data) => {
-        const { roomId, playlist } = data;
-
-        try {
-            await Room.updateOne(
-                { roomId: roomId },
-                { $set: { playlist: playlist } }
-            );
-        } catch (e) { console.error("Error saving playlist", e); }
-
-        io.to(roomId).emit('playlist_updated', playlist);
-    });
-
-    // Video Change (New video selected)
-    socket.on('video_changed', async (data) => {
-        const { roomId, video } = data;
-
-        try {
-            await Room.updateOne(
-                { roomId: roomId },
-                { $set: { currentVideo: video } }
-            );
-        } catch (e) { console.error("Error saving current video", e); }
-
-        io.to(roomId).emit('video_changed', video);
-    });
-
-    // Video State Change (Play/Pause/Seek)
-    socket.on('video_state_change', async (data) => {
-        const { roomId, videoState } = data;
-        // videoState = { isPlaying, currentTime, videoId ... }
-
-        // Only persist selected data if needed
-        // For now just broadcast
-        socket.to(roomId).emit('video_state_updated', videoState);
-    });
-
-    socket.on('disconnect', () => {
-        console.log('User disconnected', socket.id);
-    });
-});
+import socketHandler from './socketHandler.js';
+socketHandler(io);
 
 
 

@@ -12,7 +12,7 @@ const connectDB = async () => {
         if (!uri) {
             console.error("❌ MONGODB_URI is missing in .env or .env.local");
             // We don't exit process here to let the server run without DB if needed (but API will fail)
-            return;
+            process.exit(1);
         }
 
         await mongoose.connect(uri);
