@@ -84,15 +84,7 @@ export default function VideoPlayer() {
     }, [roomId, player]);
 
 
-    // Manual controls wrapper (for the custom buttons below the video)
-    const togglePlay = () => {
-        if (!player) return;
-        const state = player.getPlayerState();
-        if (state === 1) // Playing
-            player.pauseVideo();
-        else
-            player.playVideo();
-    };
+
 
     return (
         <section className={styles.section} aria-label="Lecteur vidéo">
@@ -122,8 +114,6 @@ export default function VideoPlayer() {
                         </div>
                     </div>
                 )}
-                {/* Note: The custom control bar below is optional now since YouTube player has controls.
-                But we can keep it as a remote control. */}
             </div>
         </section>
     );

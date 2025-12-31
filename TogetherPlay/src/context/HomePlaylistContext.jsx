@@ -1,4 +1,4 @@
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useState, useCallback, useMemo } from "react";
 import socket from "../services/socket.js";
 
 import thum1 from "../assets/images/thumbnail-1.jpg"
@@ -22,61 +22,61 @@ export function HomePlaylistProvider({ children }) {
     const [roomId, setRoomId] = useState(null);
 
     // Helper to emit update
-    const emitUpdate = (newItems) => {
+    const emitUpdate = useCallback((newItems) => {
         if (roomId) {
             socket.emit("update_playlist", { roomId, playlist: newItems });
         }
-    };
+    }, [roomId]);
 
-    const emitVideoChange = (video) => {
+    const emitVideoChange = useCallback((video) => {
         if (roomId) {
             socket.emit("video_changed", { roomId, video });
         }
-    };
+    }, [roomId]);
 
-    const addItem = (newItem) => {
+    const addItem = useCallback((newItem) => {
         setItems(prev => {
             const next = [...prev, { id: crypto.randomUUID(), ...newItem }];
             emitUpdate(next);
             return next;
         });
-    };
+    }, [emitUpdate]);
 
-    const removeItem = (id) => {
+    const removeItem = useCallback((id) => {
         setItems(prev => {
             const next = prev.filter(item => item.id !== id);
             emitUpdate(next);
             return next;
         });
-    };
+    }, [emitUpdate]);
 
-    const updateItem = (id, updatedFields) => {
+    const updateItem = useCallback((id, updatedFields) => {
         setItems(prev => {
             const next = prev.map(item => item.id === id ? { ...item, ...updatedFields } : item);
             emitUpdate(next);
             return next;
         });
-    };
+    }, [emitUpdate]);
 
-    const playVideo = (video) => {
+    const playVideo = useCallback((video) => {
         setCurrentVideo(video);
         emitVideoChange(video);
-    };
+    }, [emitVideoChange]);
 
-    const playNext = () => {
+    const playNext = useCallback(() => {
         if (items.length > 0) {
             const nextVideo = items[0];
             playVideo(nextVideo);
             removeItem(nextVideo.id);
         }
-    };
+    }, [items, playVideo, removeItem]);
 
-    const clearPlaylist = () => {
+    const clearPlaylist = useCallback(() => {
         setItems([]);
         emitUpdate([]);
-    };
+    }, [emitUpdate]);
 
-    const shufflePlaylist = () => {
+    const shufflePlaylist = useCallback(() => {
         setItems(prev => {
             const shuffled = [...prev];
             for (let i = shuffled.length - 1; i > 0; i--) {
@@ -86,19 +86,19 @@ export function HomePlaylistProvider({ children }) {
             emitUpdate(shuffled);
             return shuffled;
         });
-    };
+    }, [emitUpdate]);
 
     // Function to update from socket (captured from server) without emitting
-    const updatePlaylistFromSocket = (newItems) => {
+    const updatePlaylistFromSocket = useCallback((newItems) => {
         setItems(newItems);
-    };
+    }, []);
 
-    const playVideoFromSocket = (video) => {
+    const playVideoFromSocket = useCallback((video) => {
         setCurrentVideo(video);
-    };
+    }, []);
 
     // Special setter for DND which replaces the whole list
-    const setItemsAndSync = (newItemsOrFn) => {
+    const setItemsAndSync = useCallback((newItemsOrFn) => {
         // This one is tricky because setItems accepts a function or value.
         // Playlist.jsx passes a function.
         setItems(prev => {
@@ -106,19 +106,25 @@ export function HomePlaylistProvider({ children }) {
             emitUpdate(result);
             return result;
         });
-    };
+    }, [emitUpdate]);
+
+    const value = useMemo(() => ({
+        items, setItems: setItemsAndSync, // Expose strict sync version
+        addItem, removeItem,
+        currentVideo, playVideo,
+        clearPlaylist, shufflePlaylist,
+        roomId, setRoomId,
+        updatePlaylistFromSocket,
+        playVideoFromSocket,
+        playNext
+    }), [
+        items, setItemsAndSync, addItem, removeItem, currentVideo, playVideo,
+        clearPlaylist, shufflePlaylist, roomId, updatePlaylistFromSocket,
+        playVideoFromSocket, playNext
+    ]);
 
     return (
-        <HomePlaylistContext.Provider value={{
-            items, setItems: setItemsAndSync, // Expose strict sync version
-            addItem, removeItem,
-            currentVideo, playVideo,
-            clearPlaylist, shufflePlaylist,
-            roomId, setRoomId,
-            updatePlaylistFromSocket,
-            playVideoFromSocket,
-            playNext
-        }}>
+        <HomePlaylistContext.Provider value={value}>
             {children}
         </HomePlaylistContext.Provider>
     )

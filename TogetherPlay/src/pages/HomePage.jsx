@@ -37,7 +37,7 @@ export default function HomePage() {
             // The backend sends 'room_data' which contains history.
 
             if (data.playlist) updatePlaylistFromSocket(data.playlist);
-            if (data.currentVideo) playVideo(data.currentVideo);
+            if (data.currentVideo) playVideoFromSocket(data.currentVideo);
         });
 
         // Listen for updates from other users
