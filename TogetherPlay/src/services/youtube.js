@@ -44,10 +44,17 @@ export const getPopularVideos = async () => {
     }
 
     try {
-        const url = new URL(`${BASE_URL}/videos`);
+        const url = new URL(`${BASE_URL}/search`);
+
         url.searchParams.append("part", "snippet");
-        url.searchParams.append("chart", "mostPopular");
-        url.searchParams.append("regionCode", "FR"); // Optional: target region
+        url.searchParams.append(
+            "q",
+            "artificial intelligence machine learning computer science programming tutorial react github avignon"
+        );
+        url.searchParams.append("type", "video");
+        url.searchParams.append("videoCategoryId", "27"); // Education
+        url.searchParams.append("relevanceLanguage", "en"); // ou "fr"
+        url.searchParams.append("safeSearch", "strict");
         url.searchParams.append("maxResults", "12");
         url.searchParams.append("key", API_KEY);
 
