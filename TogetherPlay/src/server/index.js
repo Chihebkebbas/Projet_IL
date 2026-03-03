@@ -77,9 +77,6 @@ app.get('/api/rooms/:roomId', async (req, res) => {
    SOCKET.IO LOGIC
 ------------------------------------------------------------ */
 
-/* ------------------------------------------------------------
-   SOCKET.IO LOGIC
------------------------------------------------------------- */
 
 import socketHandler from './socketHandler.js';
 socketHandler(io);

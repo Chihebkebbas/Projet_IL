@@ -16,7 +16,8 @@ export default function socketHandler(io) {
                     socket.emit('room_data', {
                         playlist: room.playlist,
                         messages: room.messages,
-                        currentVideo: room.currentVideo
+                        currentVideo: room.currentVideo,
+                        markers: room.markers
                     });
                 }
             } catch (e) {
@@ -64,6 +65,20 @@ export default function socketHandler(io) {
         socket.on('video_state_change', (data) => {
             const { roomId, videoState } = data;
             socket.to(roomId).emit('video_state_updated', videoState);
+        });
+
+        // Add Marker
+        socket.on('add_marker', async (data) => {
+            const { roomId, marker } = data;
+            try {
+                await Room.updateOne(
+                    { roomId: roomId },
+                    { $push: { markers: marker } }
+                );
+            } catch (e) {
+                console.error("Error saving marker", e);
+            }
+            io.to(roomId).emit('receive_marker', marker);
         });
 
         socket.on('disconnect', () => {

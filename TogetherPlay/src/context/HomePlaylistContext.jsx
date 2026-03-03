@@ -20,6 +20,7 @@ export function HomePlaylistProvider({ children }) {
     const [items, setItems] = useState(initialPlaylist);
     const [currentVideo, setCurrentVideo] = useState(null);
     const [roomId, setRoomId] = useState(null);
+    const [markers, setMarkers] = useState([]);
 
     // Helper to emit update
     const emitUpdate = useCallback((newItems) => {
@@ -97,6 +98,14 @@ export function HomePlaylistProvider({ children }) {
         setCurrentVideo(video);
     }, []);
 
+    const updateMarkersFromSocket = useCallback((initialMarkers) => {
+        setMarkers(initialMarkers);
+    }, []);
+
+    const addMarkerFromSocket = useCallback((newMarker) => {
+        setMarkers(prev => [...prev, newMarker]);
+    }, []);
+
     // Special setter for DND which replaces the whole list
     const setItemsAndSync = useCallback((newItemsOrFn) => {
         // This one is tricky because setItems accepts a function or value.
@@ -116,11 +125,12 @@ export function HomePlaylistProvider({ children }) {
         roomId, setRoomId,
         updatePlaylistFromSocket,
         playVideoFromSocket,
-        playNext
+        playNext,
+        markers, updateMarkersFromSocket, addMarkerFromSocket
     }), [
         items, setItemsAndSync, addItem, removeItem, currentVideo, playVideo,
         clearPlaylist, shufflePlaylist, roomId, updatePlaylistFromSocket,
-        playVideoFromSocket, playNext
+        playVideoFromSocket, playNext, markers, updateMarkersFromSocket, addMarkerFromSocket
     ]);
 
     return (
