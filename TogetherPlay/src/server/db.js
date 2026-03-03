@@ -1,9 +1,15 @@
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 
-// Load env vars
-// Try loading .env.local first (common in Vite projects), then .env
-dotenv.config({ path: '.env.local' });
+
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+// On remonte de 'src/server' vers la racine du projet ('TogetherPlay')
+dotenv.config({ path: path.resolve(__dirname, '../../.env.local') });
 dotenv.config();
 
 const connectDB = async () => {

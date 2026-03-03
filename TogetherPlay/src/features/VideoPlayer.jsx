@@ -4,6 +4,7 @@ import thumbnail from '../assets/images/youtube.jpg';
 import { usePlaylist } from "../context/HomePlaylistContext.jsx";
 import YouTube from 'react-youtube';
 import socket from "../services/socket.js";
+import VideoMarkers from './VideoMarkers.jsx';
 
 export default function VideoPlayer() {
     const { currentVideo, roomId, playNext } = usePlaylist(); // roomId is now in context
@@ -115,6 +116,8 @@ export default function VideoPlayer() {
                     </div>
                 )}
             </div>
+
+            {currentVideo && <VideoMarkers player={player} />}
         </section>
     );
 }

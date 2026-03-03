@@ -9,6 +9,7 @@ const roomSchema = new mongoose.Schema({
     playlist: [
         {
             id: String,
+            videoId: String,
             title: String,
             thumbnail: String,
             duration: String,
@@ -17,6 +18,7 @@ const roomSchema = new mongoose.Schema({
     ],
     currentVideo: {
         id: String,
+        videoId: String,
         title: String,
         thumbnail: String,
         isPlaying: { type: Boolean, default: false },
@@ -27,6 +29,13 @@ const roomSchema = new mongoose.Schema({
             sender: String, // "me" or Username
             text: String,
             date: { type: Date, default: Date.now }
+        }
+    ],
+    markers: [
+        {
+            time: Number,
+            text: String,
+            author: String
         }
     ],
     createdAt: {

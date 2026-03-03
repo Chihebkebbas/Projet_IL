@@ -14,7 +14,7 @@ export default function HomePage() {
     const [searchQuery, setSearchQuery] = useState("");
     const { roomId } = useParams();
     const navigate = useNavigate();
-    const { setRoomId, updatePlaylistFromSocket, playVideo, playVideoFromSocket, items } = usePlaylist();
+    const { setRoomId, updatePlaylistFromSocket, playVideo, playVideoFromSocket, items, updateMarkersFromSocket, addMarkerFromSocket } = usePlaylist();
 
     useEffect(() => {
         if (!roomId) {
@@ -38,6 +38,7 @@ export default function HomePage() {
 
             if (data.playlist) updatePlaylistFromSocket(data.playlist);
             if (data.currentVideo) playVideoFromSocket(data.currentVideo);
+            if (data.markers) updateMarkersFromSocket(data.markers);
         });
 
         // Listen for updates from other users
@@ -56,14 +57,19 @@ export default function HomePage() {
             playVideoFromSocket(video);
         });
 
+        socket.on("receive_marker", (marker) => {
+            addMarkerFromSocket(marker);
+        });
+
         return () => {
             setRoomId(null);
             socket.off("room_data");
             socket.off("playlist_updated");
             socket.off("video_changed");
+            socket.off("receive_marker");
             // Optional: socket.emit("leave_room", roomId);
         }
-    }, [roomId, navigate, setRoomId, updatePlaylistFromSocket, playVideo, playVideoFromSocket]);
+    }, [roomId, navigate, setRoomId, updatePlaylistFromSocket, playVideo, playVideoFromSocket, updateMarkersFromSocket, addMarkerFromSocket]);
 
     const handleSearch = (query) => {
         setSearchQuery(query);
