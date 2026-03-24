@@ -1,19 +1,35 @@
 import Room from './models/Room.js';
 
+const roomMembers = {}; // { roomId: [{ socketId, username }] }
+
 export default function socketHandler(io) {
     io.on('connection', (socket) => {
         console.log(`User connected: ${socket.id}`);
 
         // Join a specific room
-        socket.on('join_room', async (roomId) => {
+        socket.on('join_room', async (data) => {
+            const roomId = typeof data === 'string' ? data : data.roomId;
+            const username = typeof data === 'object' ? data.username : "Invité";
+
             socket.join(roomId);
-            console.log(`User ${socket.id} joined room ${roomId}`);
+            console.log(`User ${socket.id} (${username}) joined room ${roomId}`);
+
+            // Track member in room cleanly (prevent duplicates)
+            if (!roomMembers[roomId]) roomMembers[roomId] = [];
+            const isDuplicate = roomMembers[roomId].some(m => m.socketId === socket.id);
+            if (!isDuplicate) {
+                roomMembers[roomId].push({ socketId: socket.id, username });
+            }
+
+            // Broadcast updated members list
+            io.to(roomId).emit('members_updated', roomMembers[roomId]);
 
             // Send current room state
             try {
                 const room = await Room.findOne({ roomId });
                 if (room) {
                     socket.emit('room_data', {
+                        admin: room.admin,
                         playlist: room.playlist,
                         messages: room.messages,
                         currentVideo: room.currentVideo,
@@ -67,7 +83,7 @@ export default function socketHandler(io) {
             socket.to(roomId).emit('video_state_updated', videoState);
         });
 
-        // Add Marker
+        // Ajouter une annotation dans la base de données
         socket.on('add_marker', async (data) => {
             const { roomId, marker } = data;
             try {
@@ -81,8 +97,38 @@ export default function socketHandler(io) {
             io.to(roomId).emit('receive_marker', marker);
         });
 
+        // Kick a member
+        socket.on('kick_user', async (data) => {
+            const { roomId, targetSocketId } = data;
+            const room = await Room.findOne({ roomId });
+            if (room) {
+                io.to(targetSocketId).emit('kicked');
+                const targetSocket = io.sockets.sockets.get(targetSocketId);
+                if (targetSocket) {
+                    targetSocket.leave(roomId);
+                }
+                // Update tracking
+                if (roomMembers[roomId]) {
+                    roomMembers[roomId] = roomMembers[roomId].filter(m => m.socketId !== targetSocketId);
+                    io.to(roomId).emit('members_updated', roomMembers[roomId]);
+                }
+            }
+        });
+
         socket.on('disconnect', () => {
             console.log('User disconnected', socket.id);
+            // Remove user from room tracking
+            for (const [roomId, members] of Object.entries(roomMembers)) {
+                const index = members.findIndex(m => m.socketId === socket.id);
+                if (index !== -1) {
+                    members.splice(index, 1);
+                    io.to(roomId).emit('members_updated', members);
+                    if (members.length === 0) {
+                        delete roomMembers[roomId];
+                    }
+                    break; // assumption: a socket only belongs to one room
+                }
+            }
         });
     });
 }

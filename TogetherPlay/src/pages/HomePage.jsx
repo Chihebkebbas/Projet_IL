@@ -26,7 +26,8 @@ export default function HomePage() {
         setRoomId(roomId);
 
         // Join the room
-        socket.emit("join_room", roomId);
+        const username = localStorage.getItem("username") || "Invité";
+        socket.emit("join_room", { roomId, username });
 
         // Listen for initial room data
         socket.on("room_data", (data) => {
@@ -61,12 +62,17 @@ export default function HomePage() {
             addMarkerFromSocket(marker);
         });
 
+        socket.on("kicked", () => {
+            navigate("/");
+        });
+
         return () => {
             setRoomId(null);
             socket.off("room_data");
             socket.off("playlist_updated");
             socket.off("video_changed");
             socket.off("receive_marker");
+            socket.off("kicked");
             // Optional: socket.emit("leave_room", roomId);
         }
     }, [roomId, navigate, setRoomId, updatePlaylistFromSocket, playVideo, playVideoFromSocket, updateMarkersFromSocket, addMarkerFromSocket]);

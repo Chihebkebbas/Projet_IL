@@ -44,9 +44,11 @@ app.post('/api/rooms', async (req, res) => {
         // Generate a random ID (or let Mongo do it, but we want short readable IDs maybe? 
         // For now, let's use a random string)
         const roomId = Math.random().toString(36).substring(2, 9);
+        const { admin } = req.body;
 
         const newRoom = new Room({
             roomId: roomId,
+            admin: admin || "Invité",
             playlist: [],
             messages: []
         });

@@ -31,7 +31,8 @@ export default function JoinForm() {
                 // Call Create Room API
                 const response = await fetch('http://localhost:3001/api/rooms', {
                     method: 'POST',
-                    headers: { 'Content-Type': 'application/json' }
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ admin: username })
                 });
 
                 if (!response.ok) throw new Error("Erreur de création du salon");
