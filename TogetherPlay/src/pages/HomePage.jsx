@@ -29,50 +29,44 @@ export default function HomePage() {
         const username = localStorage.getItem("username") || "Invité";
         socket.emit("join_room", { roomId, username });
 
-        // Listen for initial room data
-        socket.on("room_data", (data) => {
-            // data = { playlist, messages, currentVideo }
-            // Note: Messages are handled by Chat component independently via socket event, 
-            // OR we can pass them down. For simplicity, Chat listens to 'receive_message',
-            // but we might want to load history. 
-            // The backend sends 'room_data' which contains history.
-
+        const handleRoomData = (data) => {
             if (data.playlist) updatePlaylistFromSocket(data.playlist);
             if (data.currentVideo) playVideoFromSocket(data.currentVideo);
             if (data.markers) updateMarkersFromSocket(data.markers);
-        });
+        };
+
+        const handlePlaylistUpdated = (newPlaylist) => {
+            updatePlaylistFromSocket(newPlaylist);
+        };
+
+        const handleVideoChanged = (video) => {
+            playVideoFromSocket(video);
+        };
+
+        const handleReceiveMarker = (marker) => {
+            addMarkerFromSocket(marker);
+        };
+
+        const handleKicked = () => {
+            navigate("/");
+        };
+
+        // Listen for initial room data
+        socket.on("room_data", handleRoomData);
 
         // Listen for updates from other users
-        socket.on("playlist_updated", (newPlaylist) => {
-            updatePlaylistFromSocket(newPlaylist);
-        });
-
-        socket.on("video_changed", (video) => {
-            // We need a way to update video without emitting back
-            // But context 'playVideo' emits... 
-            // We need 'playVideoFromSocket' in context similar to 'updatePlaylistFromSocket'
-            // OR checks in context. 
-            // Let's trust that 'playVideo' emits, the server receives, sees it's same, and broadcasts back? 
-            // No, that creates infinite loop if we render based on state change.
-            // Ideally we need 'playVideoFromSocket' exposed.
-            playVideoFromSocket(video);
-        });
-
-        socket.on("receive_marker", (marker) => {
-            addMarkerFromSocket(marker);
-        });
-
-        socket.on("kicked", () => {
-            navigate("/");
-        });
+        socket.on("playlist_updated", handlePlaylistUpdated);
+        socket.on("video_changed", handleVideoChanged);
+        socket.on("receive_marker", handleReceiveMarker);
+        socket.on("kicked", handleKicked);
 
         return () => {
             setRoomId(null);
-            socket.off("room_data");
-            socket.off("playlist_updated");
-            socket.off("video_changed");
-            socket.off("receive_marker");
-            socket.off("kicked");
+            socket.off("room_data", handleRoomData);
+            socket.off("playlist_updated", handlePlaylistUpdated);
+            socket.off("video_changed", handleVideoChanged);
+            socket.off("receive_marker", handleReceiveMarker);
+            socket.off("kicked", handleKicked);
             // Optional: socket.emit("leave_room", roomId);
         }
     }, [roomId, navigate, setRoomId, updatePlaylistFromSocket, playVideo, playVideoFromSocket, updateMarkersFromSocket, addMarkerFromSocket]);

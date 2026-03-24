@@ -18,22 +18,28 @@ export default function Chat({ roomId }) {
     }, [messages]);
 
     useEffect(() => {
-        // Initial load from room_data (handled in HomePage? Or specific event?)
-        // Let's listen to room_data here specifically for messages to decouple
-        socket.on("room_data", (data) => {
-            if (data.messages) setMessages(data.messages);
-        });
+        // Demande l'historique de messages explicitement pour se découpler du "join_room" de HomePage
+        socket.emit("get_messages", roomId);
+
+        const handleMessageHistory = (history) => {
+            if (history) setMessages(history);
+        };
+
+        const handleReceiveMessage = (data) => {
+            setMessages((prev) => [...prev, data]);
+        };
+
+        // Initial load from history
+        socket.on("message_history", handleMessageHistory);
 
         // Listen for new messages
-        socket.on("receive_message", (data) => {
-            setMessages((prev) => [...prev, data]);
-        });
+        socket.on("receive_message", handleReceiveMessage);
 
         return () => {
-            socket.off("receive_message");
-            socket.off("room_data");
+            socket.off("message_history", handleMessageHistory);
+            socket.off("receive_message", handleReceiveMessage);
         };
-    }, []);
+    }, [roomId]);
 
     // Envoyer un message
     function handleSubmit(e) {

@@ -59,6 +59,16 @@ export default function socketHandler(io) {
             io.to(roomId).emit('receive_message', message);
         });
 
+        // Request Message History explicitly on mount
+        socket.on('get_messages', async (roomId) => {
+            try {
+                const room = await Room.findOne({ roomId });
+                if (room) {
+                    socket.emit('message_history', room.messages);
+                }
+            } catch (e) { console.error("Error fetching msgs", e); }
+        });
+
         // Send Playlist Update
         socket.on('update_playlist', async (data) => {
             const { roomId, playlist } = data;
