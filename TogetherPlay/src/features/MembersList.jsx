@@ -14,8 +14,13 @@ export default function MembersList({ roomId }) {
             if (data.admin) setAdmin(data.admin);
         };
 
-        const handleMembersUpdated = (updatedMembers) => {
-            setMembers(updatedMembers);
+        const handleMembersUpdated = (data) => {
+            if (Array.isArray(data)) {
+                setMembers(data);
+            } else {
+                setMembers(data.members || []);
+                if (data.admin) setAdmin(data.admin);
+            }
         };
 
         socket.on("room_data", handleRoomData);
@@ -28,7 +33,9 @@ export default function MembersList({ roomId }) {
     }, []);
 
     const handleKick = (targetSocketId) => {
-        if (currentUser === admin) {
+        const safeCurrentUser = currentUser.trim();
+        const safeAdmin = admin ? admin.trim() : "";
+        if (safeCurrentUser === safeAdmin) {
             socket.emit("kick_user", { roomId, targetSocketId });
         }
     };
@@ -40,13 +47,13 @@ export default function MembersList({ roomId }) {
                     <li key={member.socketId} className={styles.memberItem}>
                         <div className={styles.memberInfo}>
                             <span className={styles.memberName}>
-                                {member.username} {member.username === currentUser ? "(Moi)" : ""}
+                                {member.username} {member.username.trim() === currentUser.trim() ? "(Moi)" : ""}
                             </span>
-                            {member.username === admin && (
+                            {member.username.trim() === (admin || "").trim() && (
                                 <span className={styles.adminBadge}>Admin</span>
                             )}
                         </div>
-                        {currentUser === admin && member.username !== admin && (
+                        {currentUser.trim() === (admin || "").trim() && member.username.trim() !== (admin || "").trim() && (
                             <button 
                                 className={styles.kickBtn}
                                 onClick={() => handleKick(member.socketId)}

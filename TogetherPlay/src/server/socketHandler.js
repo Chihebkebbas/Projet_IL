@@ -1,6 +1,7 @@
 import Room from './models/Room.js';
 
 const roomMembers = {}; // { roomId: [{ socketId, username }] }
+const roomAdmins = {}; // { roomId: username }
 
 export default function socketHandler(io) {
     io.on('connection', (socket) => {
@@ -21,13 +22,18 @@ export default function socketHandler(io) {
                 roomMembers[roomId].push({ socketId: socket.id, username });
             }
 
-            // Broadcast updated members list
-            io.to(roomId).emit('members_updated', roomMembers[roomId]);
-
+            // Broadcast updated members list AFTER fetching admin
             // Send current room state
             try {
                 const room = await Room.findOne({ roomId });
                 if (room) {
+                    roomAdmins[roomId] = room.admin;
+                    
+                    io.to(roomId).emit('members_updated', {
+                        members: roomMembers[roomId],
+                        admin: room.admin
+                    });
+
                     socket.emit('room_data', {
                         admin: room.admin,
                         playlist: room.playlist,
@@ -110,7 +116,10 @@ export default function socketHandler(io) {
                 // Update tracking
                 if (roomMembers[roomId]) {
                     roomMembers[roomId] = roomMembers[roomId].filter(m => m.socketId !== targetSocketId);
-                    io.to(roomId).emit('members_updated', roomMembers[roomId]);
+                    io.to(roomId).emit('members_updated', {
+                        members: roomMembers[roomId],
+                        admin: roomAdmins[roomId]
+                    });
                 }
             }
         });
@@ -122,9 +131,13 @@ export default function socketHandler(io) {
                 const index = members.findIndex(m => m.socketId === socket.id);
                 if (index !== -1) {
                     members.splice(index, 1);
-                    io.to(roomId).emit('members_updated', members);
+                    io.to(roomId).emit('members_updated', {
+                        members: members,
+                        admin: roomAdmins[roomId]
+                    });
                     if (members.length === 0) {
                         delete roomMembers[roomId];
+                        delete roomAdmins[roomId];
                     }
                     break; // assumption: a socket only belongs to one room
                 }
