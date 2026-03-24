@@ -6,6 +6,7 @@ const roomSchema = new mongoose.Schema({
         required: true,
         unique: true
     },
+    admin: String,
     playlist: [
         {
             id: String,
@@ -31,7 +32,7 @@ const roomSchema = new mongoose.Schema({
             date: { type: Date, default: Date.now }
         }
     ],
-    markers: [
+    markers: [ // Pour les annotations
         {
             time: Number,
             text: String,

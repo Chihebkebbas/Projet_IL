@@ -1,0 +1,63 @@
+.membersCard {
+    display: flex;
+    flex-direction: column;
+    max-height: 250px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+}
+
+.membersList {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.memberItem {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 12px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.memberInfo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.memberName {
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: var(--text, #fff);
+}
+
+.adminBadge {
+    font-size: 0.7rem;
+    background: var(--primary, #007bff);
+    color: white;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-weight: 600;
+}
+
+.kickBtn {
+    background: var(--primary-red, #ef4444);
+    color: white;
+    border: none;
+    border-radius: 6px;
+    padding: 4px 10px;
+    font-size: 0.75rem;
+    cursor: pointer;
+    transition: background 0.2s;
+    font-weight: 500;
+}
+
+.kickBtn:hover {
+    background: #dc2626;
+}

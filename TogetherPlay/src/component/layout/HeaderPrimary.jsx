@@ -2,8 +2,11 @@ import styles from './HeaderPrimary.module.css'
 import Input from "../ui/Input.jsx";
 import Button from "../ui/Button.jsx";
 import logo from "../../assets/images/logo.png"
+import { useState } from 'react';
+import MembersList from "../../features/MembersList.jsx";
 
 export default function HeaderPrimary(props) {
+    const [showMembers, setShowMembers] = useState(false);
     return (
         <header className={`${styles.header}`}>
             <div
@@ -46,7 +49,23 @@ export default function HeaderPrimary(props) {
                         Copier le lien
                     </Button>
                 )}
-                <Button type="button" variant="glass" size="iconOnly" iconName="settings" aria-label="Paramètres" />
+                {props.roomId ? (
+                    <div style={{ position: 'relative' }}>
+                        <Button 
+                            type="button" 
+                            variant="glass" 
+                            size="iconOnly" 
+                            iconName="group" 
+                            aria-label="Membres" 
+                            onClick={() => setShowMembers(!showMembers)} 
+                        />
+                        <div style={{ display: showMembers ? 'block' : 'none', position: 'absolute', top: 'calc(100% + 15px)', right: 0, minWidth: '300px', zIndex: 9999 }}>
+                            <MembersList roomId={props.roomId} />
+                        </div>
+                    </div>
+                ) : (
+                    <Button type="button" variant="glass" size="iconOnly" iconName="settings" aria-label="Paramètres" />
+                )}
 
             </nav>
         </header>
