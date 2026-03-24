@@ -1,0 +1,33 @@
+const rooms = {};
+
+exports.joinRoom = (socket, roomId, username, io) => {
+
+  socket.join(roomId);
+
+  if (!rooms[roomId]) {
+    rooms[roomId] = {
+      users: []
+    };
+  }
+
+  rooms[roomId].users.push({
+    id: socket.id,
+    username
+  });
+
+  io.to(roomId).emit("room:users", rooms[roomId].users);
+
+};
+
+exports.leaveRoom = (socket, io) => {
+
+  for (const roomId in rooms) {
+
+    rooms[roomId].users =
+      rooms[roomId].users.filter(u => u.id !== socket.id);
+
+    io.to(roomId).emit("room:users", rooms[roomId].users);
+
+  }
+
+};
