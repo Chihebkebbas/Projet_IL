@@ -149,7 +149,7 @@ export default function socketHandler(io) {
                         delete roomMembers[roomId];
                         delete roomAdmins[roomId];
                     }
-                    break; // assumption: a socket only belongs to one room
+                    break; 
                 }
             }
         });

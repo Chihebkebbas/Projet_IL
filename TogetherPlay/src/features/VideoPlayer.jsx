@@ -7,16 +7,16 @@ import socket from "../services/socket.js";
 import VideoMarkers from './VideoMarkers.jsx';
 
 export default function VideoPlayer() {
-    const { currentVideo, roomId, playNext } = usePlaylist(); // roomId is now in context
+    const { currentVideo, roomId, playNext } = usePlaylist(); 
     const [player, setPlayer] = useState(null);
-    const isRemoteUpdate = useRef(false); // Flag to prevent loops
+    const isRemoteUpdate = useRef(false); 
 
     const opts = {
         height: '100%',
         width: '100%',
         playerVars: {
             autoplay: 1,
-            controls: 1, // Show YouTube controls
+            controls: 1, 
             modestbranding: 1,
             rel: 0,
         },
@@ -47,10 +47,6 @@ export default function VideoPlayer() {
         }
     };
 
-    // We could also listen to onStateChange for buffering/seeking, 
-    // but Play/Pause covers most sync needs for now. 
-    // Seeking usually triggers pause -> seek -> play, so it might be partially covered,
-    // but explicit seek handling requires check on current time diff.
 
     // --- RECEIVE EVENTS ---
     useEffect(() => {
