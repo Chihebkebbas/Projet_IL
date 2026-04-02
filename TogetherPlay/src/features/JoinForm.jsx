@@ -19,11 +19,11 @@ export default function JoinForm() {
         setError(null);
 
         const formData = new FormData(e.target);
-        // "code-salon" is used for both Create and Join based on input names below
+        
         const roomIdInput = formData.get(action === "create" ? "name-salon" : "code-salon");
         const username = formData.get("nom-user");
 
-        // Save username locally for now (could be passed via context, simpler with storage)
+        
         localStorage.setItem("username", username);
 
         if (action === "create") {
@@ -118,10 +118,7 @@ export default function JoinForm() {
                         />
                     </>
                 )}
-                {/* Pour "Créer", on n'a pas forcément besoin d'input nom de salon si on génère l'ID,
-                     mais on peut le garder pour le décor ou futur usage.
-                     Note : Le backend génère l'ID quoi qu'il arrive pour l'instant.
-                 */}
+                
                 {action === "create" && (
                     <div style={{ marginBottom: '1rem', color: 'var(--base200)', fontStyle: 'italic' }}>
                         Un code unique sera généré pour votre salon.
