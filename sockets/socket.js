@@ -62,7 +62,7 @@ module.exports = (io) => {
       io.to(roomId).emit("videoPlay", { currentTime });
     });
 
-    // PAUSE (FIX PRO 🔥)
+    // PAUSE
     socket.on("videoPause", ({ roomId, currentTime }) => {
       setVideoState(roomId, {
         currentTime,
