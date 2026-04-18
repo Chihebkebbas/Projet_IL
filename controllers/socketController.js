@@ -51,6 +51,7 @@ const handleSocketEvents = (socket, io) => {
             adminUsername: username,
             users: [{ username, socketId: socket.id, isAdmin: true }],
             currentVideo: null,
+            rooms: [],
             playlist: [],
             messages: [],
             createdAt: new Date()
