@@ -1,33 +1,35 @@
-const { addUserToRoom, removeUserFromRoom } = require("../rooms/roomManager");
+const {
+  addUserToRoom,
+  removeUserFromRoom,
+  getRoomUsers,
+} = require("../rooms/roomManager");
 
 module.exports = (io) => {
   io.on("connection", (socket) => {
     console.log("User connected:", socket.id);
 
-    // 🔹 rejoindre un salon
+    // JOIN ROOM
     socket.on("joinRoom", ({ roomId, username }) => {
-      socket.join(roomId);
+      if (!roomId || !username) return;
 
+      socket.join(roomId);
       addUserToRoom(roomId, socket.id, username);
 
-      console.log(`${username} joined room ${roomId}`);
-
-      io.to(roomId).emit("userJoined", {
-        userId: socket.id,
-        username,
-      });
+      io.to(roomId).emit("roomUsers", getRoomUsers(roomId));
     });
 
-    // 🔹 quitter salon
+    // LEAVE ROOM
     socket.on("leaveRoom", ({ roomId }) => {
       socket.leave(roomId);
       removeUserFromRoom(roomId, socket.id);
 
-      io.to(roomId).emit("userLeft", socket.id);
+      io.to(roomId).emit("roomUsers", getRoomUsers(roomId));
     });
 
-    // 🔹 CHAT
+    // CHAT
     socket.on("sendMessage", ({ roomId, message, username }) => {
+      if (!message) return;
+
       io.to(roomId).emit("receiveMessage", {
         message,
         username,
@@ -35,23 +37,25 @@ module.exports = (io) => {
       });
     });
 
-    // 🔹 PLAY VIDEO
+    // VIDEO PLAY
     socket.on("videoPlay", ({ roomId, currentTime }) => {
-      socket.to(roomId).emit("videoPlay", { currentTime });
+      io.to(roomId).emit("videoPlay", { currentTime });
     });
 
-    // 🔹 PAUSE VIDEO
+    // VIDEO PAUSE (FIX BUG 🔥)
     socket.on("videoPause", ({ roomId, currentTime }) => {
-      socket.to(roomId).emit("videoPause", { currentTime });
+      io.to(roomId).emit("videoPause", { currentTime });
     });
 
-    // 🔹 SEEK VIDEO
+    // VIDEO SEEK
     socket.on("videoSeek", ({ roomId, currentTime }) => {
-      socket.to(roomId).emit("videoSeek", { currentTime });
+      io.to(roomId).emit("videoSeek", { currentTime });
     });
 
-    // 🔹 AJOUT ANNOTATION
+    // ANNOTATION
     socket.on("addAnnotation", ({ roomId, text, time, username }) => {
+      if (!text) return;
+
       io.to(roomId).emit("newAnnotation", {
         text,
         time,
@@ -59,7 +63,7 @@ module.exports = (io) => {
       });
     });
 
-    // 🔹 déconnexion
+    // DISCONNECT
     socket.on("disconnect", () => {
       console.log("User disconnected:", socket.id);
     });
