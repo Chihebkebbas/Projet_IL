@@ -72,7 +72,7 @@ module.exports = (io) => {
       io.to(roomId).emit("videoPause", { currentTime });
     });
 
-    // SEEK
+    
     socket.on("videoSeek", ({ roomId, currentTime }) => {
       setVideoState(roomId, {
         currentTime,
