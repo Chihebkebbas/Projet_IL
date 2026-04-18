@@ -82,7 +82,7 @@ module.exports = (io) => {
       io.to(roomId).emit("videoSeek", { currentTime });
     });
 
-    // ANNOTATION
+    
     socket.on("addAnnotation", ({ roomId, text, time, username }) => {
       const annotation = {
         text,
