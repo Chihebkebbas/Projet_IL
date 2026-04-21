@@ -2,7 +2,7 @@ import Room from './models/Room.js';
 
 const roomMembers = {}; // { roomId: [{ socketId, username }] }
 const roomAdmins = {}; // { roomId: username }
-
+//join 
 export default function socketHandler(io) {
     io.on('connection', (socket) => {
         console.log(`User connected: ${socket.id}`);
@@ -11,6 +11,7 @@ export default function socketHandler(io) {
         socket.on('join_room', async (data) => {
             const roomId = typeof data === 'string' ? data : data.roomId;
             const username = typeof data === 'object' ? data.username : "Invité";
+             socket.data.username = username;
 
             socket.join(roomId);
             console.log(`User ${socket.id} (${username}) joined room ${roomId}`);
@@ -70,15 +71,44 @@ export default function socketHandler(io) {
         });
 
         // Send Playlist Update
-        socket.on('update_playlist', async (data) => {
+            socket.on('update_playlist', async (data) => {
             const { roomId, playlist } = data;
+
             try {
+                const room = await Room.findOne({ roomId });
+
+                if (!room) {
+                    socket.emit('playlist_error', { message: "Room introuvable." });
+                    return;
+                }
+
+                const currentUsername = socket.data.username;
+                const isAdmin = room.admin === currentUsername;
+
+                const oldPlaylist = room.playlist || [];
+                const newPlaylist = playlist || [];
+
+                // Si la nouvelle playlist est plus petite => suppression
+                const isDeletion = newPlaylist.length < oldPlaylist.length;
+
+                if (isDeletion && !isAdmin) {
+                    socket.emit('playlist_error', {
+                        message: "Seul l'admin peut supprimer une vidéo de la playlist."
+                    });
+                    return;
+                }
+
                 await Room.updateOne(
-                    { roomId: roomId },
-                    { $set: { playlist: playlist } }
+                    { roomId },
+                    { $set: { playlist } }
                 );
-            } catch (e) { console.error("Error saving playlist", e); }
-            io.to(roomId).emit('playlist_updated', playlist);
+
+                io.to(roomId).emit('playlist_updated', playlist);
+
+            } catch (e) {
+                console.error("Error saving playlist", e);
+                socket.emit('playlist_error', { message: "Erreur serveur." });
+            }
         });
 
         // Video Change
