@@ -5,7 +5,7 @@ import thum1 from "../assets/images/thumbnail-1.jpg"
 import thum2 from "../assets/images/thumbnail-2.jpg"
 import thum3 from "../assets/images/thumbnail-3.jpg"
 import thum4 from "../assets/images/thumbnail-4.jpg"
-
+//Modification 
 const HomePlaylistContext = createContext(undefined);
 
 // Données initiales
