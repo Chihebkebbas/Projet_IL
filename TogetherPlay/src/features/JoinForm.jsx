@@ -2,12 +2,20 @@ import Input from "../component/ui/Input.jsx";
 import Checkbox from "../component/ui/Checkbox.jsx";
 import Button from "../component/ui/Button.jsx";
 import styles from "./JoinForm.module.css";
-import {act, useContext, useState} from "react";
+import { useNavigate } from "react-router-dom";
 import {useWelcomeAction} from "../context/WelcomeActionContext.jsx";
 
 export default function JoinForm() {
 
     const {action, setAction} = useWelcomeAction();
+    const navigate = useNavigate();
+
+    function handleSubmit(e) {
+        e.preventDefault();
+        // Ici, vous pourrez ajouter la logique de validation plus tard
+        // Pour l'instant, on redirige vers le salon
+        navigate("/room");
+    }
 
     const join = {
         text: "Entrez le code du salon",
@@ -30,7 +38,7 @@ export default function JoinForm() {
 
     return (
         <section className={styles.card} aria-label="Formulaire de salon">
-            <form action="#" method="post" noValidate className={styles.form}>
+            <form onSubmit={handleSubmit} className={styles.form}>
                 <div className={styles.title}>
                     <button type="button" onClick={()=> handleLinkClick("create")} className={`${styles.action} ${action === "create" ? styles.active : ""}`}>Créer un Salon</button>
                     <span className={styles.separator} aria-hidden="true"></span>

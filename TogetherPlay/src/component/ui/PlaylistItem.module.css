@@ -7,15 +7,14 @@
     background: rgba(255, 255, 255, 0.03);
     border: 1px solid transparent;
     transition: all 0.2s;
-    height: 64px;
-    box-sizing: border-box;
+    list-style: none;
+    /* Reset li style */
 }
 
 .item:hover {
     background: rgba(255, 255, 255, 0.08);
     border-color: rgba(255, 255, 255, 0.1);
     transform: translateX(1px);
-
 }
 
 .thumbnail {
@@ -26,15 +25,14 @@
 }
 
 .title {
+    /* Manrope pour les titres */
     font-family: "Manrope", sans-serif;
     flex: 1;
-    font-size: 14px;
+    font-size: 13px;
     font-weight: 500;
     color: var(--base200);
     margin: 0;
-    white-space: nowrap;      /* Force le texte sur une seule ligne */
-    overflow: hidden;         /* Cache ce qui dépasse */
-    text-overflow: ellipsis;  /* Ajoute les "..." à la fin */
-    min-width: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
-

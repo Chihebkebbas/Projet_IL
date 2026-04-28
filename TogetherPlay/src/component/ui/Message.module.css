@@ -1,15 +1,9 @@
-.message {
+.group {
     display: flex;
     align-items: flex-end;
     gap: 10px;
     animation: fadeIn 0.3s ease-out;
-    max-width: 100%;
-    margin-bottom: 8px;
-}
-
-/* Inverse la direction pour l'utilisateur (alignement droite) */
-.messageUser {
-    flex-direction: row-reverse;
+    width: 100%;
 }
 
 @keyframes fadeIn {
@@ -17,10 +11,15 @@
         opacity: 0;
         transform: translateY(10px);
     }
+
     to {
         opacity: 1;
         transform: translateY(0);
     }
+}
+
+.send {
+    flex-direction: row-reverse;
 }
 
 .avatar {
@@ -32,16 +31,12 @@
     align-items: center;
     justify-content: center;
     border: 1px solid rgba(255, 255, 255, 0.1);
-    color: rgba(255, 255, 255, 0.8);
-    flex-shrink: 0;
+    font-size: 12px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    flex-shrink: 0;
 }
 
-.avatar span {
-    font-size: 18px; /* Taille de l'icône ajustée */
-}
-
-.wrapper {
+.bubbleWrapper {
     display: flex;
     flex-direction: column;
     gap: 4px;
@@ -49,42 +44,30 @@
 }
 
 .bubble {
-    max-width: 100%;
     padding: 10px 14px;
     font-size: 14px;
     line-height: 1.4;
     position: relative;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    transition: transform 0.2s ease;
+    word-break: break-word;
 }
 
-.bubble:hover {
-    transform: scale(1.01);
-}
-
-/* Style Utilisateur (Send) */
-.send {
-    background: var(--gradient-red, linear-gradient(135deg, #e50000 0%, #b40000 100%));
+/* User Message (Send / Me) */
+.send .bubble {
+    background: var(--gradient-red);
     color: white;
     border-radius: 18px 18px 4px 18px;
     box-shadow: 0 4px 15px rgba(229, 0, 0, 0.3);
     border: 1px solid rgba(255, 255, 255, 0.1);
-    align-self: flex-end;
 }
 
-/* Style Autres (Receive) */
-.receive {
+/* Other Message (Receive) */
+.receive .bubble {
     background: rgba(255, 255, 255, 0.1);
-    color: var(--base200, #e4e4e7);
+    color: var(--base200);
     border-radius: 18px 18px 18px 4px;
     backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
     border: 1px solid rgba(255, 255, 255, 0.05);
-}
-
-.text {
-    margin: 0;
-    word-wrap: break-word; /* Empêche le texte de déborder */
 }
 
 .time {
@@ -95,6 +78,10 @@
     display: none;
 }
 
-.message:active .time {
+.bubble:active .time {
     display: block;
+}
+
+.text {
+    margin: 0;
 }

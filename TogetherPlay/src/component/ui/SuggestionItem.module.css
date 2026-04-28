@@ -1,16 +1,17 @@
-
-
 .card {
     display: flex;
     flex-direction: column;
     gap: 10px;
     background: transparent;
     cursor: pointer;
-    position: relative; /* Pour le contexte de superposition */
+    border: none;
+    padding: 0;
+    text-align: left;
+    width: 100%;
 }
 
-/* --- L'IMAGE (Thumbnail) --- */
-.thumbnail {
+/* --- 1. L'IMAGE (Thumbnail) --- */
+.thumbnailWrapper {
     position: relative;
     width: 100%;
     aspect-ratio: 16 / 9;
@@ -21,7 +22,7 @@
     transition: transform 0.2s ease-out, box-shadow 0.2s ease-out;
 }
 
-.image {
+.thumbnail {
     width: 100%;
     height: 100%;
     object-fit: cover;
@@ -29,16 +30,16 @@
     transition: opacity 0.2s ease;
 }
 
-.card:hover .thumbnail {
+.card:hover .thumbnailWrapper {
     transform: scale(1.02);
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.6);
 }
 
-.card:hover .image {
+.card:hover .thumbnail {
     opacity: 1;
 }
 
-/* --- LES INFOS --- */
+/* --- 2. LES INFOS --- */
 .info {
     display: flex;
     justify-content: space-between;
@@ -48,6 +49,7 @@
 }
 
 .title {
+    /* Manrope pour les titres */
     font-family: "Manrope", sans-serif;
     flex: 1;
     font-size: 14px;
@@ -68,8 +70,8 @@
     color: var(--white);
 }
 
-/* --- LE BOUTON AJOUTER --- */
-.addBtn {
+/* --- 3. LE BOUTON --- */
+.addToPlaylistBtn {
     flex-shrink: 0;
     width: 32px;
     height: 32px;
@@ -89,12 +91,16 @@
     transition: all 0.2s ease-out;
 }
 
-.card:hover .addBtn {
+.card:hover .addToPlaylistBtn {
     opacity: 1;
     transform: translateX(0);
 }
 
-.addBtn:hover {
+.addToPlaylistBtn:hover {
     background: var(--primary-red);
     transform: scale(1.1);
+}
+
+.addToPlaylistBtn .materialSymbolsOutlined {
+    font-size: 20px;
 }

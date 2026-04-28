@@ -1,0 +1,32 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    text-align: center;
+    background: radial-gradient(circle at center, #1a1a1a 0%, #000000 100%);
+    color: var(--white);
+    padding: 2rem;
+}
+
+.title {
+    font-size: 8rem;
+    font-weight: 900;
+    margin: 0;
+    background: var(--gradient-red);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    border: none;
+    line-height: 1;
+    filter: drop-shadow(0 0 20px rgba(229, 0, 0, 0.4));
+}
+
+.description {
+    font-size: 1.5rem;
+    color: var(--base300);
+    margin: 1.5rem 0 3rem;
+    max-width: 600px;
+    line-height: 1.6;
+}

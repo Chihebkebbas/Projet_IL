@@ -1,3 +1,6 @@
+/* ============================================
+   3. HEADER (Flottant & Glass)
+   ============================================ */
 .header {
     position: sticky;
     top: 20px;
@@ -22,6 +25,7 @@
     filter: drop-shadow(0 0 10px rgba(229, 0, 0, 0.3));
 }
 
+/* Barre de recherche  */
 .container {
     flex: 1;
     max-width: 500px;
@@ -29,11 +33,9 @@
     margin: 0 40px;
 }
 
-.actions {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-}
+/* Note: styles for Input component should be handled there, but we can override or ensure structure allows it.
+   The user CSS had .search-bar styles. We might need to make sure our Input component supports this styling or pass a class.
+*/
 
 .icon {
     position: absolute;
@@ -45,3 +47,26 @@
     pointer-events: none;
 }
 
+/* Boutons Header */
+.actions {
+    display: flex;
+    gap: 12px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .header {
+        position: relative;
+        flex-direction: column;
+        padding: 20px;
+        gap: 15px;
+        height: auto;
+        border-radius: 24px;
+        margin: 20px;
+    }
+
+    .container {
+        margin: 0;
+        width: 100%;
+    }
+}
