@@ -9,6 +9,8 @@ export default function JoinForm() {
 
     const {action, setAction} = useWelcomeAction();
 
+    // Deux parcours d'entrée sont proposés :
+    // créer un salon (future logique d'administration) ou rejoindre un salon existant.
     const join = {
         text: "Entrez le code du salon",
         button: "Rejoindre le salon",
@@ -23,6 +25,7 @@ export default function JoinForm() {
 
 
     function handleLinkClick(id) {
+        // Ce changement d'état pilote tout le formulaire sans changer de page.
         setAction(id);
     }
 
@@ -50,6 +53,8 @@ export default function JoinForm() {
                 <Input
                     id="nom-user"
                     name="nom-user"
+                    // Le nom d'utilisateur sert d'identité de base dans le salon
+                    // pour distinguer les participants dans les interactions collaboratives.
                     placeholder="Entrez un nom d'utilisateur"
                     autoComplete="name"
                     required
