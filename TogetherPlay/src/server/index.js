@@ -47,6 +47,9 @@ async function generateRoomId() {
     throw new Error('Could not allocate room id');
 }
 
+// Health-check (used by Docker HEALTHCHECK and load balancers)
+app.get('/api/health', (_req, res) => res.json({ status: 'ok' }));
+
 app.post('/api/rooms', apiLimiter, async (req, res) => {
     try {
         const adminRaw = (req.body?.admin ?? '').toString().trim();

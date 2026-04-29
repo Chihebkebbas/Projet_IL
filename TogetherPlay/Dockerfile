@@ -1,42 +1,44 @@
-# Stage 1: Build the React Application
-FROM node:20-alpine as build
+# ─── Stage 1: Build the React frontend ───────────────────────────────────────
+FROM node:20-alpine AS build
 
 WORKDIR /app
 
-# Copy package.json and package-lock.json
+# Install dependencies first (better layer caching)
 COPY package*.json ./
+RUN npm ci
 
-# Install dependencies
-RUN npm install
-
-# Copy the rest of the application code
+# Copy source and build
 COPY . .
-
-# Build the frontend (Vite)
 RUN npm run build
 
-# Stage 2: Serve with Node.js
-FROM node:20-alpine
+
+# ─── Stage 2: Production Node.js server ──────────────────────────────────────
+FROM node:20-alpine AS production
 
 WORKDIR /app
 
-# Copy package.json and package-lock.json
-COPY package*.json ./
-
 # Install only production dependencies
-RUN npm install --omit=dev
+COPY package*.json ./
+RUN npm ci --omit=dev
 
-# Copy the server code
-COPY src ./src
+# Copy server source
+COPY src/server ./src/server
 
-# Copy the built frontend from the previous stage
+# Copy built frontend from stage 1
 COPY --from=build /app/dist ./dist
 
-# Expose the port
-EXPOSE 3001
+# Non-root user for security
+RUN addgroup -S appgroup && adduser -S appuser -G appgroup
+USER appuser
 
-# Set environment variable
-ENV NODE_ENV=production
+# Expose the server port (default 3000, overridable via PORT env)
+EXPOSE 3000
 
-# Start the server
+ENV NODE_ENV=production \
+    PORT=3000
+
+# Health check
+HEALTHCHECK --interval=30s --timeout=5s --start-period=10s --retries=3 \
+  CMD wget -qO- http://localhost:${PORT}/api/health 2>/dev/null || exit 1
+
 CMD ["node", "src/server/index.js"]
