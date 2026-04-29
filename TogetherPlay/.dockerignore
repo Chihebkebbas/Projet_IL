@@ -1,6 +1,11 @@
 node_modules
 dist
 .env
+.env.local
 .git
+.gitignore
 .idea
 .DS_Store
+*.log
+coverage
+.claude
