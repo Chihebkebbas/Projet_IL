@@ -7,17 +7,18 @@ import { getMessages, saveMessages } from "../services/messagesStorage.js";
 
 export default function Chat() {
 
-    // Charger les messages depuis localStorage
+    // Initialiser l'état du chat avec les messages déjà enregistrés sur le navigateur.
     const [messages, setMessages] = useState(() => {
         return getMessages();
     });
 
-    // Synchroniser les messages avec localStorage à chaque changement
+    // Garder l'historique local synchronisé après chaque nouvel envoi.
     useEffect(() => {
         saveMessages(messages);
     }, [messages]);
 
-    // Envoyer un message
+    // Ajouter le nouveau message dans l'état local puis le persister indirectement
+    // via l'effet ci-dessus.
     function handleSubmit(e) {
         e.preventDefault();
         const text = e.target.elements.message.value;
@@ -41,6 +42,8 @@ export default function Chat() {
 
                 <div className={styles.messages}>
                     {messages.map((msg, i) => (
+                        // Le variant permet de distinguer visuellement mes messages
+                        // de ceux des autres participants.
                         <Message key={i} variant={msg.sender === "me" ? "send" : "receive"}>
                             {msg.text}
                         </Message>
