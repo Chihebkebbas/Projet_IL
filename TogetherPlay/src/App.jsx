@@ -9,6 +9,7 @@ function App() {
     return (
         <WelcomeActionProvider>
             <HomePlaylistProvider>
+                <div className="decor-blobs" aria-hidden="true" />
                 <Routes>
                     <Route path="/" element={<WelcomePage />} />
                     <Route path="/room/:roomId" element={<HomePage />} />
@@ -16,7 +17,7 @@ function App() {
                 </Routes>
             </HomePlaylistProvider>
         </WelcomeActionProvider>
-    )
+    );
 }
 
-export default App
+export default App;

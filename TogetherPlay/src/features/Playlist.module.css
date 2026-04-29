@@ -1,45 +1,35 @@
 .list {
-    /* --- Style Visuel --- */
     padding: 0 12px 0 2px;
     margin: 0;
     list-style: none;
     display: flex;
     flex-direction: column;
-    gap: 12px;
+    gap: 8px;
 
     max-height: 25vh;
     min-height: 100px;
-    /* Un peu de hauteur même vide */
     overflow-y: auto;
     overflow-x: hidden;
 }
 
 .empty {
-    color: var(--base300);
+    color: var(--base400);
     text-align: center;
-    padding: 30px 10px;
-    font-size: 0.9rem;
+    padding: 28px 12px;
+    font-size: 13px;
     font-style: italic;
-    background: rgba(255, 255, 255, 0.05);
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px dashed rgba(255, 255, 255, 0.08);
     border-radius: var(--radius-md);
-    margin: 0 10px;
+    margin: 4px 8px;
 }
 
-/* --- Design de la Scrollbar (Pour rester Pro) --- */
-.list::-webkit-scrollbar {
-    width: 4px;
-    /* Très fine pour ne pas gêner le design */
-}
-
-.list::-webkit-scrollbar-track {
-    background: transparent;
-}
-
+.list::-webkit-scrollbar { width: 4px; }
+.list::-webkit-scrollbar-track { background: transparent; }
 .list::-webkit-scrollbar-thumb {
-    background: rgba(255, 255, 255, 0.2);
+    background: rgba(255, 255, 255, 0.18);
     border-radius: 10px;
 }
-
 .list::-webkit-scrollbar-thumb:hover {
-    background: rgba(255, 255, 255, 0.4);
+    background: rgba(255, 31, 61, 0.45);
 }

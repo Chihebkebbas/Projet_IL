@@ -1,8 +1,8 @@
 .footer {
-    margin-top: 140px;
-    margin-bottom: 20px;
+    margin-top: 80px;
+    margin-bottom: 24px;
     text-align: center;
-    font-size: 16px;
-    color: var(--base300);
-    opacity: 1;
+    font-size: 13px;
+    color: var(--base400);
+    letter-spacing: 0.04em;
 }

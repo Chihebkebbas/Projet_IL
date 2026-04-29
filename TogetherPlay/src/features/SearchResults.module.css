@@ -1,92 +1,83 @@
 .section {
     padding-bottom: 40px;
-    animation: fadeIn 0.4s ease-out;
-}
-
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-        transform: translateY(10px);
-    }
-
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
+    animation: fadeRise 0.4s var(--ease-apple);
 }
 
 .title {
     font-family: "Manrope", sans-serif;
-    font-size: 20px;
+    font-size: 22px;
     font-weight: 700;
     color: var(--white);
-    margin-bottom: 30px;
+    margin-bottom: 8px;
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 14px;
+    letter-spacing: -0.01em;
+    flex-wrap: wrap;
 }
 
 .title::before {
     content: "";
     display: block;
     width: 4px;
-    height: 24px;
-    background: var(--primary-red);
+    height: 22px;
+    background: var(--gradient-red);
     border-radius: 2px;
+    box-shadow: 0 0 12px rgba(255, 31, 61, 0.6);
 }
 
 .highlight {
-    color: var(--primary-red);
-    font-style: italic;
+    background: var(--gradient-text);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+    font-style: normal;
+    font-weight: 700;
+}
+
+.subtitle {
+    color: var(--base400);
+    font-size: 13px;
+    margin: 0 0 24px 18px;
 }
 
 .grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: 30px;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 28px 22px;
 }
 
 .noResults {
     color: var(--base300);
     text-align: center;
     margin-top: 50px;
-    font-size: 1.1rem;
-}
-
-@media (max-width: 600px) {
-    .grid {
-        grid-template-columns: 1fr;
-    }
+    font-size: 16px;
 }
 
 .loading {
     color: var(--base300);
-    font-size: 1.2rem;
+    font-size: 15px;
     text-align: center;
     padding: 40px;
     animation: pulse 1.5s infinite ease-in-out;
 }
 
 .error {
-    color: var(--primary-red);
-    background: rgba(229, 0, 0, 0.1);
-    padding: 15px;
-    border-radius: 8px;
-    border: 1px solid var(--primary-red);
+    color: #ffb1bd;
+    background: rgba(255, 31, 61, 0.08);
+    padding: 14px 18px;
+    border-radius: var(--radius-md);
+    border: 1px solid rgba(255, 31, 61, 0.3);
     text-align: center;
     margin-bottom: 20px;
 }
 
 @keyframes pulse {
-    0% {
-        opacity: 0.5;
-    }
+    0%, 100% { opacity: 0.5; }
+    50%      { opacity: 1; }
+}
 
-    50% {
-        opacity: 1;
-    }
-
-    100% {
-        opacity: 0.5;
-    }
+@media (max-width: 600px) {
+    .grid { grid-template-columns: 1fr; }
 }

@@ -1,7 +1,7 @@
 import io from 'socket.io-client';
+import { API_URL } from './api.js';
 
-// Singleton socket connection
-const socket = io("http://localhost:3001", {
+const socket = io(API_URL, {
     autoConnect: true,
     reconnection: true
 });

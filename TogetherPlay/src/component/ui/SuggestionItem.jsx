@@ -2,25 +2,24 @@ import styles from './SuggestionItem.module.css';
 import { usePlaylist } from "../../context/HomePlaylistContext.jsx";
 
 export default function SuggestionItem({ video }) {
-
-    const { addItem, playVideo } = usePlaylist(); // Assurez-vous d'avoir exporté addItem dans votre Context !
+    const { addItem, playVideo } = usePlaylist();
 
     function handleAddItem(e) {
-        e.stopPropagation(); // Empêche de lancer la vidéo si on clique juste sur "Ajouter"
-
-        // On crée un nouvel objet pour la playlist basé sur la suggestion
-        const newItem = {
-            videoId: video.id, // Important: Keep the original YouTube ID!
+        e.stopPropagation();
+        addItem({
+            videoId: video.id,
             title: video.title,
             thumbnail: video.thumbnail,
-            duration: video.duration // Si vous avez cette info
-        };
+            duration: video.duration
+        });
+    }
 
-        addItem(newItem);
+    function handleCardClick() {
+        playVideo(video);
     }
 
     return (
-        <article className={styles.card} onClick={() => playVideo(video)}>
+        <article className={styles.card} onClick={handleCardClick}>
             <div className={styles.thumbnailWrapper}>
                 <img
                     src={video.thumbnail}
@@ -42,5 +41,5 @@ export default function SuggestionItem({ video }) {
                 </button>
             </div>
         </article>
-    )
+    );
 }

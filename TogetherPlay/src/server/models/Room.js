@@ -4,9 +4,10 @@ const roomSchema = new mongoose.Schema({
     roomId: {
         type: String,
         required: true,
-        unique: true
+        unique: true,
+        index: true
     },
-    admin: String,
+    admin: { type: String, required: true },
     playlist: [
         {
             id: String,
@@ -21,28 +22,32 @@ const roomSchema = new mongoose.Schema({
         id: String,
         videoId: String,
         title: String,
-        thumbnail: String,
+        thumbnail: String
+    },
+    playback: {
         isPlaying: { type: Boolean, default: false },
-        startedAt: Number // Timestamp to sync position
+        currentTime: { type: Number, default: 0 },
+        updatedAt: { type: Number, default: 0 }
     },
     messages: [
         {
-            sender: String, // "me" or Username
-            text: String,
+            sender: { type: String, required: true },
+            text: { type: String, required: true, maxlength: 300 },
             date: { type: Date, default: Date.now }
         }
     ],
-    markers: [ // Pour les annotations
+    markers: [
         {
-            time: Number,
-            text: String,
-            author: String
+            videoId: { type: String, required: true, index: true },
+            time: { type: Number, required: true, min: 0 },
+            text: { type: String, required: true, maxlength: 200 },
+            author: { type: String, required: true }
         }
     ],
     createdAt: {
         type: Date,
         default: Date.now,
-        expires: 86400 // Optional: Rooms expire after 24 hours (TTL)
+        expires: 86400
     }
 });
 

@@ -1,27 +1,44 @@
 .card {
-    /* Structure */
-    padding: 40px 80px;
-    border-radius: 50px;
+    padding: 44px 64px;
+    border-radius: var(--radius-xl);
     width: 100%;
-    max-width: 900px;
+    max-width: 720px;
     overflow: hidden;
     position: relative;
 
-    /* Effet Glass unifié avec Home.css */
-    background: var(--glass-bg);
+    background: var(--glass-bg-strong);
     backdrop-filter: var(--glass-blur);
     -webkit-backdrop-filter: var(--glass-blur);
     border: 1px solid var(--glass-border);
-    border-top: 1px solid rgba(255, 255, 255, 0.15); /* Lumière zénithale */
-    box-shadow: var(--glass-shadow);
+    border-top-color: var(--glass-border-strong);
+    box-shadow: var(--elev-3);
 
-    transition: transform 0.3s var(--ease-apple), box-shadow 0.3s var(--ease-apple);
+    transition: transform 0.4s var(--ease-apple), box-shadow 0.4s var(--ease-apple), border-color 0.4s var(--ease-apple);
+    animation: fadeRise 0.7s var(--ease-apple) 0.1s both;
+}
+
+.card::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    padding: 1px;
+    background: var(--gradient-card-border);
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.4s var(--ease-apple);
 }
 
 .card:hover {
     transform: translateY(-4px);
-    box-shadow: 0 30px 60px rgba(0, 0, 0, 0.5);
-    border-color: rgba(255, 255, 255, 0.15);
+    box-shadow: 0 30px 70px rgba(0, 0, 0, 0.55);
+}
+
+.card:hover::before {
+    opacity: 1;
 }
 
 .form {
@@ -29,57 +46,78 @@
     display: flex;
     flex-direction: column;
     align-items: stretch;
-    gap: 20px;
+    gap: 18px;
 }
 
 .title {
     display: flex;
     justify-content: center;
-    gap: 40px;
+    gap: 32px;
     align-items: center;
-    margin: 0px 0px 32px;
+    margin: 0 0 28px;
 }
 
 .action {
-    /* Reset Button Styles */
     background: none;
     border: none;
     cursor: pointer;
-    padding: 0;
-    padding-bottom: 4px; /* Pour la bordure active */
-
-
-    font-size: 18px;
+    padding: 0 0 6px;
+    font-size: 17px;
     font-family: "Manrope", sans-serif;
     font-weight: 600;
-    color: var(--base300);
+    color: var(--base400);
     text-decoration: none;
-    transition: color 0.2s ease;
-    padding-bottom: 4px;
     border-bottom: 2px solid transparent;
-    background: none;
+    transition: color 0.25s var(--ease-apple), border-color 0.25s var(--ease-apple);
 }
 
-.action:hover,
+.action:hover {
+    color: var(--base200);
+}
+
 .active {
     color: var(--white);
-}
-
-.active {
     border-bottom-color: var(--primary-red);
+    text-shadow: 0 0 18px rgba(255, 31, 61, 0.4);
 }
 
 .separator {
     width: 1px;
-    height: 24px;
+    height: 22px;
     background: var(--glass-border);
+}
+
+.hint {
+    margin: -4px 0 4px;
+    color: var(--base400);
+    font-style: italic;
+    font-size: 14px;
+}
+
+.error {
+    margin: 0 0 4px;
+    padding: 10px 14px;
+    border-radius: var(--radius-md);
+    background: rgba(255, 31, 61, 0.1);
+    border: 1px solid rgba(255, 31, 61, 0.3);
+    color: #ffb1bd;
+    font-size: 14px;
 }
 
 .conditions {
     color: var(--base200);
     text-decoration: underline;
+    text-decoration-color: rgba(255, 255, 255, 0.3);
+    text-underline-offset: 2px;
 }
 
 .alignEnd {
     align-self: flex-end;
+}
+
+@media (max-width: 600px) {
+    .card { padding: 32px 24px; }
+    .title { gap: 18px; }
+    .action { font-size: 15px; }
+    .alignEnd { align-self: stretch; width: 100%; }
 }

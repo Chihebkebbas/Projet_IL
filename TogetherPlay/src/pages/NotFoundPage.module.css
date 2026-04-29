@@ -5,28 +5,29 @@
     justify-content: center;
     min-height: 100vh;
     text-align: center;
-    background: radial-gradient(circle at center, #1a1a1a 0%, #000000 100%);
     color: var(--white);
     padding: 2rem;
+    animation: fadeRise 0.5s var(--ease-apple);
 }
 
 .title {
-    font-size: 8rem;
-    font-weight: 900;
+    font-family: "Manrope", sans-serif;
+    font-size: clamp(96px, 18vw, 180px);
+    font-weight: 800;
+    letter-spacing: -0.04em;
     margin: 0;
-    background: var(--gradient-red);
+    background: var(--gradient-text);
     background-clip: text;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
-    border: none;
     line-height: 1;
-    filter: drop-shadow(0 0 20px rgba(229, 0, 0, 0.4));
+    filter: drop-shadow(0 0 40px rgba(255, 31, 61, 0.45));
 }
 
 .description {
-    font-size: 1.5rem;
+    font-size: 18px;
     color: var(--base300);
-    margin: 1.5rem 0 3rem;
-    max-width: 600px;
+    margin: 18px 0 36px;
+    max-width: 540px;
     line-height: 1.6;
 }

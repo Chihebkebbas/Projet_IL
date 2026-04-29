@@ -1,53 +1,61 @@
 /* ========================================
-   BASE (S'applique à tous les boutons)
+   BASE
    ======================================== */
 .btn {
     position: relative;
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    gap: 8px; /* Espace entre icône et texte */
+    gap: 8px;
 
     font-family: "Inter", sans-serif;
     font-weight: 600;
-    border-radius: 100px;
+    border-radius: var(--radius-full);
     cursor: pointer;
     overflow: hidden;
+    isolation: isolate;
 
-    /* Transitions fluides */
-    transition: all 0.3s var(--ease-apple, ease);
+    transition: transform 0.3s var(--ease-apple),
+                box-shadow 0.3s var(--ease-apple),
+                background 0.3s var(--ease-apple),
+                border-color 0.3s var(--ease-apple),
+                color 0.2s var(--ease-apple);
 }
 
 .btn:active {
-    transform: scale(0.98);
+    transform: scale(0.97);
+}
+
+.btn:disabled {
+    opacity: 0.55;
+    cursor: not-allowed;
+    transform: none !important;
 }
 
 /* ========================================
-   TAILLES (Sizes)
+   TAILLES
    ======================================== */
-/* Correspond à "welcomeBotton" */
 .large {
     height: 56px;
     padding: 0 32px;
     font-size: 16px;
 }
 
-/* Correspond à "homeBotton" */
 .default {
     height: 44px;
-    padding: 0 20px;
+    padding: 0 22px;
     font-size: 14px;
+    letter-spacing: 0.01em;
 }
 
-/* Correspond à "primary button" */
 .xlarge {
-    height: 64px;
-    font-size: 18px;
-    padding: 0px 48px;
+    height: 60px;
+    font-size: 17px;
+    padding: 0 44px;
     width: fit-content;
+    letter-spacing: 0.01em;
 }
 
-/* Pour les boutons carrés (juste une icône) */
 .iconOnly {
     width: 44px;
     height: 44px;
@@ -56,40 +64,62 @@
 }
 
 /* ========================================
-   VARIANTES (Couleurs & Apparence)
+   VARIANTES
    ======================================== */
 
-/* 1. GLASS (Par défaut - Header) */
+/* GLASS */
 .glass {
     background: rgba(255, 255, 255, 0.05);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    border: 1px solid var(--glass-border, rgba(255,255,255,0.1));
-    color: var(--base300);
+    backdrop-filter: blur(12px) saturate(120%);
+    -webkit-backdrop-filter: blur(12px) saturate(120%);
+    border: 1px solid var(--glass-border);
+    color: var(--base200);
 }
 
 .glass:hover {
     background: rgba(255, 255, 255, 0.1);
-    border-color: rgba(255, 255, 255, 0.2);
+    border-color: rgba(255, 255, 255, 0.22);
+    color: var(--white);
     transform: translateY(-2px);
-    box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.3);
 }
 
-/* 2. PRIMARY (Le bouton rouge du formulaire) */
+/* PRIMARY */
 .primary {
     width: fit-content;
-    background: var(--gradient-red, linear-gradient(135deg, #e50000, #b30000));
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    color: var(--white, #fff);
-    box-shadow: 0 10px 30px rgba(229, 0, 0, 0.3);
+    background: var(--gradient-red);
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    color: var(--white);
+    box-shadow: 0 12px 30px rgba(255, 31, 61, 0.32),
+                inset 0 1px 0 rgba(255, 255, 255, 0.25);
+}
+
+.primary::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+        110deg,
+        transparent 30%,
+        rgba(255, 255, 255, 0.35) 50%,
+        transparent 70%
+    );
+    transform: translateX(-110%);
+    transition: transform 0.7s var(--ease-apple);
+    z-index: -1;
 }
 
 .primary:hover {
     transform: translateY(-2px);
-    box-shadow: 0 15px 40px rgba(229, 0, 0, 0.4);
+    box-shadow: 0 18px 40px rgba(255, 31, 61, 0.45),
+                inset 0 1px 0 rgba(255, 255, 255, 0.3);
 }
 
-/* 3. GHOST (Icônes seules, transparentes) */
+.primary:hover::before {
+    transform: translateX(110%);
+}
+
+/* GHOST (icônes) */
 .ghost {
     aspect-ratio: 1 / 1;
     background: transparent;
@@ -100,10 +130,15 @@
     border-radius: 50%;
 }
 
+.ghost:hover {
+    background: rgba(255, 255, 255, 0.06);
+    color: var(--white);
+}
+
 .red:hover {
     cursor: pointer;
     padding: 4px;
     border-radius: 50%;
     color: var(--primary-red) !important;
-    background: rgba(229, 0, 0, 0.1);;
+    background: rgba(255, 31, 61, 0.12);
 }
