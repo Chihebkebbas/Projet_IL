@@ -1,73 +1,76 @@
-import styles from './HeaderPrimary.module.css'
+import styles from './HeaderPrimary.module.css';
 import Input from "../ui/Input.jsx";
 import Button from "../ui/Button.jsx";
-import logo from "../../assets/images/logo.png"
+import logo from "../../assets/images/logo.png";
 import { useState } from 'react';
 import MembersList from "../../features/MembersList.jsx";
 
-export default function HeaderPrimary(props) {
+export default function HeaderPrimary({ onSearch, onLogoClick, roomId }) {
     const [showMembers, setShowMembers] = useState(false);
+
+    function handleSearchSubmit(e) {
+        e.preventDefault();
+        const formData = new FormData(e.target);
+        const query = (formData.get("search") || "").toString().trim();
+        if (onSearch) onSearch(query);
+    }
+
+    async function handleCopyLink() {
+        try {
+            await navigator.clipboard.writeText(roomId);
+            alert("Code copié !");
+        } catch (err) {
+            console.error("Erreur copie", err);
+        }
+    }
+
     return (
-        <header className={`${styles.header}`}>
-            <div
-                onClick={props.onLogoClick}
-                style={{ cursor: props.onLogoClick ? 'pointer' : 'default' }}
-                role="button"
+        <header className={styles.header}>
+            <button
+                type="button"
+                className={styles.logoButton}
+                onClick={onLogoClick}
                 aria-label="Retour à l'accueil"
-                tabIndex={0}
             >
-                <img className={`${styles.logo}`} src={logo} alt="Logo Together Play" />
-            </div>
-            <form className={`${styles.container}`} role="search" onSubmit={(e) => {
-                e.preventDefault();
-                // On récupère la valeur de l'input nommé "search"
-                const formData = new FormData(e.target);
-                const query = formData.get("search");
-                if (props.onSearch) {
-                    props.onSearch(query);
-                }
-            }}>
+                <img className={styles.logo} src={logo} alt="Logo Together Play" />
+            </button>
+
+            <form className={styles.container} role="search" onSubmit={handleSearchSubmit}>
                 <Input type="search" name="search" variant="search" placeholder="Rechercher" ariaLabel="Rechercher" />
                 <button type="submit" className={styles.searchBtn} aria-label="Lancer la recherche">
                     <span className={`${styles.icon} material-symbols-outlined`}>search</span>
                 </button>
             </form>
-            <nav className={`${styles.actions}`} aria-label="Actions du header">
-                {/* Show Copy Link only if we have a room ID (passed via props) */}
-                {props.roomId && (
+
+            <nav className={styles.actions} aria-label="Actions du header">
+                {roomId && (
                     <Button
                         type="button"
                         variant="glass"
                         size="default"
-                        onClick={() => {
-                            const url = window.location.href;
-                            navigator.clipboard.writeText(url)
-                                .then(() => alert("Lien copié !"))
-                                .catch(err => console.error("Erreur copie", err));
-                        }}
+                        onClick={handleCopyLink}
                     >
-                        Copier le lien
+                        Copier le code
                     </Button>
                 )}
-                {props.roomId ? (
-                    <div style={{ position: 'relative' }}>
-                        <Button 
-                            type="button" 
-                            variant="glass" 
-                            size="iconOnly" 
-                            iconName="group" 
-                            aria-label="Membres" 
-                            onClick={() => setShowMembers(!showMembers)} 
+                {roomId ? (
+                    <div className={styles.membersWrapper}>
+                        <Button
+                            type="button"
+                            variant="glass"
+                            size="iconOnly"
+                            iconName="group"
+                            aria-label="Membres"
+                            onClick={() => setShowMembers(v => !v)}
                         />
-                        <div style={{ display: showMembers ? 'block' : 'none', position: 'absolute', top: 'calc(100% + 15px)', right: 0, minWidth: '300px', zIndex: 9999 }}>
-                            <MembersList roomId={props.roomId} />
+                        <div className={`${styles.membersDropdown} ${showMembers ? styles.membersDropdownOpen : ''}`}>
+                            <MembersList roomId={roomId} />
                         </div>
                     </div>
                 ) : (
                     <Button type="button" variant="glass" size="iconOnly" iconName="settings" aria-label="Paramètres" />
                 )}
-
             </nav>
         </header>
-    )
+    );
 }

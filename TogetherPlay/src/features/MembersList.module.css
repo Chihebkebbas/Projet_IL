@@ -1,8 +1,10 @@
 .membersCard {
     display: flex;
     flex-direction: column;
-    max-height: 250px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+    max-height: 320px;
+    box-shadow: var(--elev-3);
+    background: var(--glass-bg-strong);
+    animation: fadeRise 0.25s var(--ease-apple);
 }
 
 .membersList {
@@ -12,52 +14,71 @@
     overflow-y: auto;
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: 6px;
 }
 
 .memberItem {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 8px 12px;
-    background: rgba(255, 255, 255, 0.05);
-    border-radius: 8px;
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    gap: 10px;
+    padding: 10px 14px;
+    background: rgba(255, 255, 255, 0.04);
+    border-radius: var(--radius-md);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    transition: background 0.25s var(--ease-apple),
+                border-color 0.25s var(--ease-apple);
+}
+
+.memberItem:hover {
+    background: rgba(255, 255, 255, 0.07);
+    border-color: rgba(255, 255, 255, 0.12);
 }
 
 .memberInfo {
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: 10px;
+    min-width: 0;
 }
 
 .memberName {
-    font-size: 0.95rem;
+    font-size: 14px;
     font-weight: 500;
-    color: var(--text, #fff);
+    color: var(--white);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .adminBadge {
-    font-size: 0.7rem;
-    background: var(--primary, #007bff);
-    color: white;
-    padding: 2px 6px;
-    border-radius: 4px;
-    font-weight: 600;
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    background: var(--gradient-red);
+    color: var(--white);
+    padding: 3px 8px;
+    border-radius: var(--radius-full);
+    font-weight: 700;
+    box-shadow: 0 4px 10px rgba(255, 31, 61, 0.35);
 }
 
 .kickBtn {
-    background: var(--primary-red, #ef4444);
-    color: white;
-    border: none;
-    border-radius: 6px;
-    padding: 4px 10px;
-    font-size: 0.75rem;
+    background: rgba(255, 31, 61, 0.12);
+    color: #ffb1bd;
+    border: 1px solid rgba(255, 31, 61, 0.3);
+    border-radius: var(--radius-full);
+    padding: 4px 12px;
+    font-size: 12px;
     cursor: pointer;
-    transition: background 0.2s;
-    font-weight: 500;
+    font-weight: 600;
+    transition: background 0.25s var(--ease-apple),
+                color 0.25s var(--ease-apple),
+                border-color 0.25s var(--ease-apple);
 }
 
 .kickBtn:hover {
-    background: #dc2626;
+    background: var(--gradient-red);
+    color: var(--white);
+    border-color: transparent;
 }

@@ -1,5 +1,5 @@
 /* ========================================
-   BASE (Commun à tous les inputs)
+   BASE
    ======================================== */
 .input {
     width: 100%;
@@ -7,62 +7,57 @@
     font-family: "Inter", sans-serif;
     font-size: 16px;
     color: var(--white);
-    outline: none; /* pour une gestion manuelle du focus*/
-    border-radius: 100px;
-
-    /* Reset partiel */
+    outline: none;
+    border-radius: var(--radius-full);
     margin: 0;
     appearance: none;
 }
 
 .input::placeholder {
-    color: var(--base300);
-    opacity: 1; /* Fix pour Firefox */
+    color: var(--base400);
+    opacity: 1;
 }
 
 /* ========================================
    VARIANTES
    ======================================== */
 
-/* 1. DEFAULT (Page d'accueil - Grand et Glass) */
+/* DEFAULT — page d'accueil */
 .default {
-    height: 64px;
-    padding: 0 32px;
-
-    background: rgba(0, 0, 0, 0.2);
+    height: 60px;
+    padding: 0 28px;
+    background: rgba(0, 0, 0, 0.28);
     border: 1px solid rgba(255, 255, 255, 0.1);
-    transition: all 0.2s var(--ease-apple, ease);
+    transition: background 0.25s var(--ease-apple), border-color 0.25s var(--ease-apple), box-shadow 0.25s var(--ease-apple);
 }
 
 .default:focus {
-    background: rgba(0, 0, 0, 0.4);
-    border-color: var(--white);
-    box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.05);
+    background: rgba(0, 0, 0, 0.5);
+    border-color: rgba(255, 31, 61, 0.5);
+    box-shadow: 0 0 0 4px rgba(255, 31, 61, 0.12);
 }
 
-/* 2. SEARCH (Header - Compact et Rond) */
+/* SEARCH — header */
 .search {
     height: 44px;
-    padding: 0 48px 0 20px; /* Padding droit pour l'icône loupe */
-
-    background: rgba(255, 255, 255, 0.07);
+    padding: 0 48px 0 20px;
+    background: rgba(255, 255, 255, 0.06);
     border: 1px solid transparent;
     font-size: 15px;
-    transition: all 0.3s var(--ease-apple, ease);
+    transition: background 0.25s var(--ease-apple), border-color 0.25s var(--ease-apple), box-shadow 0.25s var(--ease-apple);
 }
 
 .search:focus {
-    background: rgba(0, 0, 0, 0.8);
-    border-color: rgba(255, 255, 255, 0.2);
+    background: rgba(0, 0, 0, 0.6);
+    border-color: rgba(255, 255, 255, 0.22);
     box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.05);
 }
 
-/* 3. CHAT (Barre de message - Minimaliste) */
+/* CHAT — barre message */
 .chat {
-    height: auto; /* Laisse le conteneur décider */
+    height: auto;
     padding: 8px 16px;
     background: transparent;
     border: none;
     font-size: 14px;
 }
-

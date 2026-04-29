@@ -64,7 +64,7 @@ import Button from "../component/ui/Button.jsx";
    LE COMPOSANT PRINCIPAL
 ------------------------------------------------------------ */
 export default function Playlist() {
-    const { items, setItems, clearPlaylist, shufflePlaylist } = usePlaylist();
+    const { items, setItems, clearPlaylist, shufflePlaylist, isAdmin } = usePlaylist();
 
     // Configuration des capteurs (Souris, Tactile, Clavier)
     // PointerSensor est mieux que MouseSensor (marche sur mobile aussi)
@@ -89,7 +89,7 @@ export default function Playlist() {
         }
     };
 
-    const playlistActions = (
+    const playlistActions = isAdmin ? (
         <>
             <Button
                 type="button"
@@ -110,7 +110,7 @@ export default function Playlist() {
                 onClick={clearPlaylist}
             />
         </>
-    );
+    ) : null;
 
     return (
         <Card title="Playlist" iconName="menu" actions={playlistActions}>

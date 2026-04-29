@@ -36,8 +36,9 @@ export default function SearchResults({ query }) {
     return (
         <section className={styles.section} aria-label="Résultats de recherche">
             <h2 className={styles.title}>
-                Résultats pour : <span className={styles.highlight}>"{query}"</span>
+                Résultats pour <span className={styles.highlight}>"{query}"</span>
             </h2>
+            <p className={styles.subtitle}>Filtres : SafeSearch · FR · contenus intégrables</p>
 
             {loading && <p className={styles.loading}>Recherche en cours...</p>}
 

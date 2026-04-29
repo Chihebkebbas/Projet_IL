@@ -14,7 +14,11 @@ export default function HomePage() {
     const [searchQuery, setSearchQuery] = useState("");
     const { roomId } = useParams();
     const navigate = useNavigate();
-    const { setRoomId, updatePlaylistFromSocket, playVideo, playVideoFromSocket, items, updateMarkersFromSocket, addMarkerFromSocket } = usePlaylist();
+    const {
+        setRoomId, setAdmin,
+        updatePlaylistFromSocket, playVideoFromSocket,
+        updateMarkersFromSocket, addMarkerFromSocket
+    } = usePlaylist();
 
     useEffect(() => {
         if (!roomId) {
@@ -22,71 +26,64 @@ export default function HomePage() {
             return;
         }
 
-        // Set roomId in context so actions emit to this room
         setRoomId(roomId);
 
-        // Join the room
         const username = localStorage.getItem("username") || "Invité";
         socket.emit("join_room", { roomId, username });
 
         const handleRoomData = (data) => {
+            if (data.admin) setAdmin(data.admin);
             if (data.playlist) updatePlaylistFromSocket(data.playlist);
             if (data.currentVideo) playVideoFromSocket(data.currentVideo);
             if (data.markers) updateMarkersFromSocket(data.markers);
         };
-
-        const handlePlaylistUpdated = (newPlaylist) => {
-            updatePlaylistFromSocket(newPlaylist);
-        };
-
-        const handleVideoChanged = (video) => {
+        const handlePlaylistUpdated = (newPlaylist) => updatePlaylistFromSocket(newPlaylist);
+        const handleVideoChanged = (payload) => {
+            // Server now emits { video, playback }; older shape was just the video.
+            const video = payload?.video ?? payload;
             playVideoFromSocket(video);
         };
-
-        const handleReceiveMarker = (marker) => {
-            addMarkerFromSocket(marker);
+        const handleReceiveMarker = (marker) => addMarkerFromSocket(marker);
+        const handleKicked = () => navigate("/");
+        const handleRoomError = (err) => {
+            console.error("Room error:", err?.message);
+            navigate("/");
         };
-
-        const handleKicked = () => {
+        const handleSessionReplaced = () => {
+            alert("Cette session a été ouverte dans un autre onglet ou navigateur.");
             navigate("/");
         };
 
-        // Listen for initial room data
         socket.on("room_data", handleRoomData);
-
-        // Listen for updates from other users
         socket.on("playlist_updated", handlePlaylistUpdated);
         socket.on("video_changed", handleVideoChanged);
         socket.on("receive_marker", handleReceiveMarker);
         socket.on("kicked", handleKicked);
+        socket.on("room_error", handleRoomError);
+        socket.on("session_replaced", handleSessionReplaced);
 
         return () => {
             setRoomId(null);
+            setAdmin(null);
             socket.off("room_data", handleRoomData);
             socket.off("playlist_updated", handlePlaylistUpdated);
             socket.off("video_changed", handleVideoChanged);
             socket.off("receive_marker", handleReceiveMarker);
             socket.off("kicked", handleKicked);
-            // Optional: socket.emit("leave_room", roomId);
-        }
-    }, [roomId, navigate, setRoomId, updatePlaylistFromSocket, playVideo, playVideoFromSocket, updateMarkersFromSocket, addMarkerFromSocket]);
+            socket.off("room_error", handleRoomError);
+            socket.off("session_replaced", handleSessionReplaced);
+        };
+    }, [roomId, navigate, setRoomId, setAdmin, updatePlaylistFromSocket, playVideoFromSocket, updateMarkersFromSocket, addMarkerFromSocket]);
 
-    const handleSearch = (query) => {
-        setSearchQuery(query);
-    };
-
-    const handleLogoClick = () => {
-        setSearchQuery(""); // Reset search to show default home view
-    };
+    const handleSearch = (query) => setSearchQuery(query);
+    const handleLogoClick = () => setSearchQuery("");
 
     return (
         <div className={styles.pageWrapper}>
-
             <HeaderPrimary onSearch={handleSearch} onLogoClick={handleLogoClick} roomId={roomId} />
 
             <div className={styles.layout}>
                 <main className={styles.main}>
-                    {/* Si on cherche : on affiche les résultats. Sinon : Video + Suggestions */}
                     {searchQuery ? (
                         <SearchResults query={searchQuery} />
                     ) : (
@@ -102,7 +99,6 @@ export default function HomePage() {
                     <Chat roomId={roomId} />
                 </aside>
             </div>
-
         </div>
-    )
+    );
 }

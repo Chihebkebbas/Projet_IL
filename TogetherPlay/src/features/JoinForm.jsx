@@ -5,6 +5,7 @@ import styles from "./JoinForm.module.css";
 import { useNavigate } from "react-router-dom";
 import { useWelcomeAction } from "../context/WelcomeActionContext.jsx";
 import { useState } from "react";
+import { API_URL } from "../services/api.js";
 
 export default function JoinForm() {
 
@@ -19,17 +20,21 @@ export default function JoinForm() {
         setError(null);
 
         const formData = new FormData(e.target);
-        
-        const roomIdInput = formData.get(action === "create" ? "name-salon" : "code-salon");
-        const username = formData.get("nom-user");
 
-        
+        const roomIdInput = formData.get(action === "create" ? "name-salon" : "code-salon");
+        const username = (formData.get("nom-user") || "").toString().trim();
+
+        if (!username || username.length > 30) {
+            setError("Nom d'utilisateur invalide (1 à 30 caractères).");
+            setLoading(false);
+            return;
+        }
+
         localStorage.setItem("username", username);
 
         if (action === "create") {
             try {
-                // Call Create Room API
-                const response = await fetch('http://localhost:3001/api/rooms', {
+                const response = await fetch(`${API_URL}/api/rooms`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ admin: username })
@@ -44,17 +49,15 @@ export default function JoinForm() {
                 setError("Impossible de créer le salon.");
             }
         } else {
-            // Join Room
-            const roomId = roomIdInput.trim();
-            if (!roomId) {
-                setError("Veuillez entrer un ID de salon.");
+            const roomId = (roomIdInput || "").toString().trim();
+            if (!/^[a-zA-Z0-9]{4,16}$/.test(roomId)) {
+                setError("Code de salon invalide.");
                 setLoading(false);
                 return;
             }
 
             try {
-                // Check if room exists
-                const response = await fetch(`http://localhost:3001/api/rooms/${roomId}`);
+                const response = await fetch(`${API_URL}/api/rooms/${roomId}`);
                 if (response.status === 404) {
                     setError("Ce salon n'existe pas.");
                     setLoading(false);
@@ -63,7 +66,6 @@ export default function JoinForm() {
 
                 if (!response.ok) throw new Error("Erreur serveur");
 
-                // Navigate to room
                 navigate(`/room/${roomId}`);
             } catch (err) {
                 console.error(err);
@@ -102,7 +104,7 @@ export default function JoinForm() {
                     <button type="button" onClick={() => handleLinkClick("join")} className={`${styles.action} ${action === "join" ? styles.active : ""}`} >Rejoindre Salon</button>
                 </div>
 
-                {error && <p style={{ color: 'var(--primary-red)', marginBottom: '10px' }}>{error}</p>}
+                {error && <p className={styles.error} role="alert">{error}</p>}
 
                 {action === "join" && (
                     <>
@@ -120,9 +122,9 @@ export default function JoinForm() {
                 )}
                 
                 {action === "create" && (
-                    <div style={{ marginBottom: '1rem', color: 'var(--base200)', fontStyle: 'italic' }}>
+                    <p className={styles.hint}>
                         Un code unique sera généré pour votre salon.
-                    </div>
+                    </p>
                 )}
 
                 <label className="sr-only" htmlFor="nom-user">Nom d'utilisateur</label>

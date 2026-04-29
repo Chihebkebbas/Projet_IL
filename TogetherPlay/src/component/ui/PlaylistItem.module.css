@@ -3,36 +3,43 @@
     align-items: center;
     gap: 12px;
     padding: 10px;
-    border-radius: 16px;
+    border-radius: var(--radius-md);
     background: rgba(255, 255, 255, 0.03);
     border: 1px solid transparent;
-    transition: all 0.2s;
+    transition: background 0.25s var(--ease-apple),
+                border-color 0.25s var(--ease-apple),
+                transform 0.25s var(--ease-apple);
     list-style: none;
-    /* Reset li style */
+    cursor: pointer;
 }
 
 .item:hover {
-    background: rgba(255, 255, 255, 0.08);
-    border-color: rgba(255, 255, 255, 0.1);
-    transform: translateX(1px);
+    background: rgba(255, 255, 255, 0.07);
+    border-color: rgba(255, 31, 61, 0.25);
+    transform: translateX(2px);
 }
 
 .thumbnail {
-    width: 60px;
+    width: 64px;
     height: 40px;
     border-radius: 8px;
     object-fit: cover;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
 }
 
 .title {
-    /* Manrope pour les titres */
     font-family: "Manrope", sans-serif;
     flex: 1;
     font-size: 13px;
-    font-weight: 500;
+    font-weight: 600;
     color: var(--base200);
     margin: 0;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    transition: color 0.2s var(--ease-apple);
+}
+
+.item:hover .title {
+    color: var(--white);
 }

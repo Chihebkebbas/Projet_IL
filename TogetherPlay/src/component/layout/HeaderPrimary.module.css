@@ -1,47 +1,59 @@
-/* ============================================
-   3. HEADER (Flottant & Glass)
-   ============================================ */
 .header {
     position: sticky;
-    top: 20px;
+    top: 16px;
     z-index: 100;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin: 0 40px 30px 40px;
+    margin: 16px 40px 28px;
     padding: 12px 24px;
 
-    /* Effet pillule flottante */
-    background: rgba(10, 10, 10, 0.7);
-    backdrop-filter: blur(20px);
+    background: linear-gradient(
+        to bottom,
+        rgba(20, 20, 26, 0.85),
+        rgba(8, 8, 12, 0.7)
+    );
+    backdrop-filter: blur(28px) saturate(150%);
+    -webkit-backdrop-filter: blur(28px) saturate(150%);
     border: 1px solid var(--glass-border);
+    border-top-color: rgba(255, 255, 255, 0.18);
     border-radius: var(--radius-full);
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    box-shadow: var(--elev-3);
+}
+
+.logoButton {
+    background: transparent;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    border-radius: 50%;
+    transition: transform 0.3s var(--ease-spring);
+}
+
+.logoButton:hover {
+    transform: scale(1.05) rotate(-2deg);
 }
 
 .logo {
-    height: 42px;
+    height: 40px;
     width: auto;
-    filter: drop-shadow(0 0 10px rgba(229, 0, 0, 0.3));
+    filter: drop-shadow(0 0 12px rgba(255, 31, 61, 0.4));
 }
 
-/* Barre de recherche  */
 .container {
     flex: 1;
-    max-width: 500px;
+    max-width: 520px;
     position: relative;
-    margin: 0 40px;
+    margin: 0 32px;
     display: flex;
-    /* Ensure input and button align */
     align-items: center;
 }
 
-/* The input styling is handled by Input component, but the container positions the button */
-
-/* Search Button (Invisible but clickable) */
 .searchBtn {
     position: absolute;
-    right: 5px;
+    right: 6px;
     top: 50%;
     transform: translateY(-50%);
     background: transparent;
@@ -52,41 +64,59 @@
     align-items: center;
     justify-content: center;
     border-radius: 50%;
-    transition: background 0.2s;
+    transition: background 0.2s var(--ease-apple), color 0.2s var(--ease-apple);
     color: var(--base300);
 }
 
 .searchBtn:hover {
-    background: rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.08);
     color: var(--white);
 }
 
 .icon {
     font-size: 20px;
     pointer-events: none;
-    /* Let clicks pass to button if needed, but button handles click */
 }
 
-/* Boutons Header */
 .actions {
     display: flex;
     gap: 12px;
 }
 
-/* Responsive */
+.logoButton {
+    background: transparent;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+}
+
+.membersWrapper {
+    position: relative;
+}
+
+.membersDropdown {
+    position: absolute;
+    top: calc(100% + 14px);
+    right: 0;
+    min-width: 320px;
+    z-index: 9999;
+    display: none;
+}
+
+.membersDropdownOpen {
+    display: block;
+    animation: fadeRise 0.2s var(--ease-apple);
+}
+
 @media (max-width: 768px) {
     .header {
         position: relative;
         flex-direction: column;
-        padding: 20px;
-        gap: 15px;
+        padding: 16px;
+        gap: 14px;
         height: auto;
-        border-radius: 24px;
-        margin: 20px;
+        border-radius: var(--radius-xl);
+        margin: 12px;
     }
-
-    .container {
-        margin: 0;
-        width: 100%;
-    }
+    .container { margin: 0; width: 100%; }
 }

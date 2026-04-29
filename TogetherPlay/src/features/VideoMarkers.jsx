@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import styles from './VideoMarkers.module.css';
 import Input from '../component/ui/Input.jsx';
 import Button from '../component/ui/Button.jsx';
@@ -11,37 +11,37 @@ function formatTime(seconds) {
     return `${min}:${sec < 10 ? '0' : ''}${sec}`;
 }
 
-export default function VideoMarkers({ player }) {
+export default function VideoMarkers({ player, videoId }) {
     const { markers, roomId } = usePlaylist();
     const [markerText, setMarkerText] = useState('');
+
+    const visibleMarkers = useMemo(
+        () => (markers || []).filter(m => m.videoId === videoId),
+        [markers, videoId]
+    );
 
     const handleAddMarker = (e) => {
         e.preventDefault();
 
-        if (!markerText.trim() || !player || !roomId) return;
+        const text = markerText.trim();
+        if (!text || !player || !roomId || !videoId) return;
 
         const currentTime = player.getCurrentTime();
-        const author = localStorage.getItem("username") || "Anonyme";
 
-        const newMarker = {
-            time: currentTime,
-            text: markerText.trim(),
-            author: author
-        };
-
-        // Envoi au serveur
         socket.emit("add_marker", {
             roomId,
-            marker: newMarker
+            marker: {
+                videoId,
+                time: currentTime,
+                text
+            }
         });
 
         setMarkerText('');
     };
 
     const handleSeekToMarker = (time) => {
-        if (player) {
-            player.seekTo(time, true);
-        }
+        if (player) player.seekTo(time, true);
     };
 
     return (
@@ -68,14 +68,14 @@ export default function VideoMarkers({ player }) {
                 </Button>
             </form>
 
-            {markers.length > 0 ? (
+            {visibleMarkers.length > 0 ? (
                 <ul className={styles.markersList}>
-                    {markers
-                        .slice() // create a copy before sorting
-                        .sort((a, b) => a.time - b.time) // sort chronologically
+                    {visibleMarkers
+                        .slice()
+                        .sort((a, b) => a.time - b.time)
                         .map((marker, index) => (
                             <li
-                                key={index}
+                                key={`${marker.time}-${index}`}
                                 className={styles.markerItem}
                                 onClick={() => handleSeekToMarker(marker.time)}
                             >
